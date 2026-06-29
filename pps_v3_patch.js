@@ -357,26 +357,45 @@
   // ============================================================
   // H. APPLY DATA PATCHES (Tamil names + Wiki URLs + Cultural Notes)
   // ============================================================
-  function applyDataPatches() {
-    if (typeof TEMPLES === "undefined") { setTimeout(applyDataPatches, 100); return; }
-    TEMPLES.forEach(t => {
-      // Add Tamil deity name if missing
-      if (!t.name_ta && NAME_TA_MORE[t.name]) t.name_ta = NAME_TA_MORE[t.name];
-      // Fix Wiki URL: override or convert search-URL to Special:Search
-      t.wiki_en = WIKI_OVERRIDES[t.name] || (t.wiki && t.wiki.includes("?search=") 
-        ? `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(t.name + " Temple " + t.town)}&go=Go`
-        : t.wiki);
-      t.wiki_ta = TAMIL_WIKI_OVERRIDES[t.name] || t.wiki_en;
-      t.wiki = t.wiki_en;
-      // Add cultural notes
-      if (CULTURAL_NOTES[t.name]) {
-        t.notes = t.notes && t.notes.trim()
-          ? `★ ${CULTURAL_NOTES[t.name]} · ${t.notes}`
-          : `★ ${CULTURAL_NOTES[t.name]}`;
-      }
-    });
-    if (typeof render === "function") render();
+ function applyDataPatches() {
+  if (typeof TEMPLES === "undefined") { 
+    setTimeout(applyDataPatches, 100); 
+    return; 
   }
+  let taApplied = 0;
+  let wikiFixed = 0;
+  TEMPLES.forEach(t => {
+    // Add Tamil deity name if missing
+    if (!t.name_ta && NAME_TA_MORE[t.name]) {
+      t.name_ta = NAME_TA_MORE[t.name];
+      taApplied++;
+    }
+    // Fix Wiki URL: override or convert search-URL to Special:Search
+    const newWiki = WIKI_OVERRIDES[t.name] || (t.wiki && t.wiki.includes("?search=") 
+      ? "https://en.wikipedia.org/wiki/Special:Search?search=" + encodeURIComponent(t.name + " Temple " + t.town) + "&go=Go"
+      : t.wiki);
+    t.wiki_en = newWiki;
+    t.wiki_ta = TAMIL_WIKI_OVERRIDES[t.name] || newWiki;
+    t.wiki = newWiki;
+    if (newWiki !== t.wiki) wikiFixed++;
+    // Add cultural notes
+    if (CULTURAL_NOTES[t.name]) {
+      t.notes = t.notes && t.notes.trim()
+        ? "★ " + CULTURAL_NOTES[t.name] + " · " + t.notes
+        : "★ " + CULTURAL_NOTES[t.name];
+    }
+  });
+  console.log("[pps_v3_patch] Applied Tamil names to", taApplied, "temples; fixed", wikiFixed, "Wiki URLs");
+  
+  // Force re-render — try multiple ways to be sure
+  if (typeof window.render === "function") {
+    window.render();
+  } else if (typeof render === "function") {
+    render();
+  } else {
+    console.warn("[pps_v3_patch] render() not found — cards won't refresh");
+  }
+}
 
   // ============================================================
   // I. LANGUAGE TOGGLE
@@ -423,7 +442,7 @@
         ${apple}="event.stopPropagation()">🍎 Apple</a>
         ${osm}="event.stopPropagation()">🌍 OSM</a>
         <button class="coord-btn" onclick="event.stopPropagation();window.__copyCoords(event,'${coords}',this)">📋 Copy</button>
-        ${audioUrl}="event.stopPropagation()">${audioLabel}</a>
+       <button class="audio-btn" onclick="event.stopPropagation();event.preventDefault();window.open('${audioUrl}','_blank','noopener,noreferrer');return false;" title="Open Tevaram recitation in new tab">${audioLabel}</button>
       </div>
     </div>`;
   }
