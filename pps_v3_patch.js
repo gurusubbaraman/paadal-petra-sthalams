@@ -474,6 +474,36 @@
     } catch(e) { return false; }
   }
 
+    // Inject Tamil deity names into cards (works regardless of render() state)
+  function injectTamilNames() {
+    document.querySelectorAll('.card[data-sno]').forEach(function(card) {
+      // Duplicate guard — skip if either the base template's or our injected version exists
+      if (card.querySelector('.card-name-ta')) return;
+      if (card.querySelector('.card-name-ta-injected')) return;
+      
+      const sno = parseInt(card.dataset.sno);
+      const t = TEMPLES.find(function(x) { return x.sno === sno; });
+      if (!t) return;
+      
+      // Try multiple sources for the Tamil name
+      const ta = t.name_ta || NAME_TA_MORE[t.name];
+      if (!ta) return;
+      
+      const nameEl = card.querySelector('.card-name');
+      if (!nameEl) return;
+      
+      const div = document.createElement('div');
+      div.className = 'card-name-ta-injected';
+      div.textContent = ta;
+      div.style.cssText = 'font-family:"Noto Serif Tamil",serif;font-size:0.9rem;color:#A0522D;font-weight:600;margin-top:3px;display:block;width:100%;';
+      
+      // Insert right after the .card-head div
+      const head = card.querySelector('.card-head');
+      if (head) {
+        head.insertAdjacentElement('afterend', div);
+      }
+    });
+  }
   // Inject coords + audio panel into right-side cards (after every render)
   function injectCardPanels() {
     document.querySelectorAll('.card[data-sno]').forEach(function(card) {
@@ -485,16 +515,20 @@
   }
 
   // Watch for card list changes (filtering, searching) and re-inject
-  function watchCards() {
+ function watchCards() {
     const cardsContainer = document.getElementById('cards');
     if (!cardsContainer) { setTimeout(watchCards, 200); return; }
     
-    // Initial injection
+    // Initial injection — both Tamil names AND coord panels
+    injectTamilNames();
     injectCardPanels();
     
     // Watch for future changes
     const observer = new MutationObserver(function() {
-      setTimeout(injectCardPanels, 10);
+      setTimeout(function() {
+        injectTamilNames();
+        injectCardPanels();
+      }, 10);
     });
     observer.observe(cardsContainer, { childList: true, subtree: false });
   }
