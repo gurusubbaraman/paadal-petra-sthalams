@@ -424,7 +424,7 @@
   // ============================================================
   // J. COORDINATES + AUDIO BUTTONS (for cards only, not popups)
   // ============================================================
-  function buildCoordPanel(t) {
+   function buildCoordPanel(t) {
     if (t.lat == null || t.lng == null) return "";
     const lat = parseFloat(t.lat).toFixed(4);
     const lng = parseFloat(t.lng).toFixed(4);
@@ -432,16 +432,19 @@
     const gmap = "https://www.google.com/maps?q=" + lat + "," + lng + "&z=17";
     const apple = "https://maps.apple.com/?ll=" + lat + "," + lng + "&z=17&q=" + encodeURIComponent(t.name);
     const osm = "https://www.openstreetmap.org/?mlat=" + lat + "&mlon=" + lng + "&zoom=17";
-    const audioUrl = CURATED_AUDIO[t.name] || "https://www.youtube.com/results?search_query=" + encodeURIComponent(t.town + " " + t.name + " Thevaram pathigam");
-    const audioLabel = CURATED_AUDIO[t.name] ? "🎵 Listen ★" : "🎵 Listen";
+    const audioUrl = (typeof CURATED_AUDIO !== "undefined" && CURATED_AUDIO[t.name])
+      ? CURATED_AUDIO[t.name]
+      : "https://www.youtube.com/results?search_query=" + encodeURIComponent(t.town + " " + t.name + " Thevaram pathigam");
+    const audioLabel = (typeof CURATED_AUDIO !== "undefined" && CURATED_AUDIO[t.name]) ? "🎵 Listen ★" : "🎵 Listen";
+    
     return '<div class="coord-panel">' +
       '<div class="coord-row"><span class="coord-label">📍</span><span class="coord-value">' + coords + '</span></div>' +
       '<div class="coord-actions">' +
-        gmap + '" target="_blank" rel="noopener" class="coord-btn coord-btn-gmap" onclick="event.stopPropagation()">🗺️ Google</a>' +
-        apple + '" target="_blank" rel="noopener" class="coord-btn coord-btn-apple" onclick="event.stopPropagation()">🍎 Apple</a>' +
-        osm + '" target="_blank" rel="noopener" class="coord-btn coord-btn-osm" onclick="event.stopPropagation()">🌍 OSM</a>' +
-        '<button class="coord-btn" onclick="event.stopPropagation();window.__copyCoords(event,\'' + coords + '\',this)">📋 Copy</button>' +
-        '<button class="audio-btn" onclick="event.stopPropagation();event.preventDefault();window.open(\'' + audioUrl + '\',\'_blank\',\'noopener,noreferrer\');return false;">' + audioLabel + '</button>' +
+        '<a data-action="open" data-url="' + gmap + '" class="coord-btn coord-btn-gmap">🗺️ Google</a>' +
+        '<a data-action="open" data-url="' + apple + '" class="coord-btn coord-btn-apple">🍎 Apple</a>' +
+        '<a data-action="open" data-url="' + osm + '" class="coord-btn coord-btn-osm">🌍 OSM</a>' +
+        '<button data-action="copy" data-coords="' + coords + '" class="coord-btn">📋 Copy</button>' +
+        '<button data-action="open" data-url="' + audioUrl + '" class="audio-btn">' + audioLabel + '</button>' +
       '</div>' +
     '</div>';
   }
@@ -551,4 +554,34 @@
   } else {
     boot();
   }
+    // Global click delegate — handles all coord-panel button clicks via data attributes
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    
+    e.stopPropagation();
+    e.preventDefault();
+    
+    const action = btn.dataset.action;
+    
+    if (action === 'open') {
+      const url = btn.dataset.url;
+      if (url) window.open(url, '_blank', 'noopener,noreferrer');
+    } else if (action === 'copy') {
+      const coords = btn.dataset.coords;
+      const success = function() {
+        const o = btn.innerHTML;
+        btn.innerHTML = "✓ Copied!";
+        btn.classList.add("copied");
+        setTimeout(function() { btn.innerHTML = o; btn.classList.remove("copied"); }, 1500);
+      };
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(coords).then(success).catch(function() {
+          if (fallback(coords)) success();
+        });
+      } else {
+        if (fallback(coords)) success();
+      }
+    }
+  }, true);
 })();
