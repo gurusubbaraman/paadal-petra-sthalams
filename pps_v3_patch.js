@@ -421,102 +421,97 @@
     };
     document.body.appendChild(btn);
   }
-
   // ============================================================
-  // J. COORDINATES + AUDIO BUTTONS
+  // J. COORDINATES + AUDIO BUTTONS (for cards only, not popups)
   // ============================================================
   function buildCoordPanel(t) {
     if (t.lat == null || t.lng == null) return "";
     const lat = parseFloat(t.lat).toFixed(4);
     const lng = parseFloat(t.lng).toFixed(4);
-    const coords = `${lat}, ${lng}`;
-    const gmap = `https://www.google.com/maps?q=${lat},${lng}&z=17`;
-    const apple = `https://maps.apple.com/?ll=${lat},${lng}&z=17&q=${encodeURIComponent(t.name)}`;
-    const osm = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}&zoom=17`;
-    const audioUrl = CURATED_AUDIO[t.name] || `https://www.youtube.com/results?search_query=${encodeURIComponent(t.town + " " + t.name + " Thevaram pathigam")}`;
+    const coords = lat + ", " + lng;
+    const gmap = "https://www.google.com/maps?q=" + lat + "," + lng + "&z=17";
+    const apple = "https://maps.apple.com/?ll=" + lat + "," + lng + "&z=17&q=" + encodeURIComponent(t.name);
+    const osm = "https://www.openstreetmap.org/?mlat=" + lat + "&mlon=" + lng + "&zoom=17";
+    const audioUrl = CURATED_AUDIO[t.name] || "https://www.youtube.com/results?search_query=" + encodeURIComponent(t.town + " " + t.name + " Thevaram pathigam");
     const audioLabel = CURATED_AUDIO[t.name] ? "🎵 Listen ★" : "🎵 Listen";
-    return `<div class="coord-panel">
-      <div class="coord-row"><span class="coord-label">📍</span><span class="coord-value">${coords}</span></div>
-      <div class="coord-actions">
-        ${gmap}="event.stopPropagation()">🗺️ Google</a>
-        ${apple}="event.stopPropagation()">🍎 Apple</a>
-        ${osm}="event.stopPropagation()">🌍 OSM</a>
-        <button class="coord-btn" onclick="event.stopPropagation();window.__copyCoords(event,'${coords}',this)">📋 Copy</button>
-       <button class="audio-btn" onclick="event.stopPropagation();event.preventDefault();window.open('${audioUrl}','_blank','noopener,noreferrer');return false;" title="Open Tevaram recitation in new tab">${audioLabel}</button>
-      </div>
-    </div>`;
+    return '<div class="coord-panel">' +
+      '<div class="coord-row"><span class="coord-label">📍</span><span class="coord-value">' + coords + '</span></div>' +
+      '<div class="coord-actions">' +
+        gmap + '" target="_blank" rel="noopener" class="coord-btn coord-btn-gmap" onclick="event.stopPropagation()">🗺️ Google</a>' +
+        apple + '" target="_blank" rel="noopener" class="coord-btn coord-btn-apple" onclick="event.stopPropagation()">🍎 Apple</a>' +
+        osm + '" target="_blank" rel="noopener" class="coord-btn coord-btn-osm" onclick="event.stopPropagation()">🌍 OSM</a>' +
+        '<button class="coord-btn" onclick="event.stopPropagation();window.__copyCoords(event,\'' + coords + '\',this)">📋 Copy</button>' +
+        '<button class="audio-btn" onclick="event.stopPropagation();event.preventDefault();window.open(\'' + audioUrl + '\',\'_blank\',\'noopener,noreferrer\');return false;">' + audioLabel + '</button>' +
+      '</div>' +
+    '</div>';
   }
 
   window.__copyCoords = function(e, coords, btn) {
     e.stopPropagation(); e.preventDefault();
-    const success = () => { const o = btn.innerHTML; btn.innerHTML = "✓ Copied!"; btn.classList.add("copied"); setTimeout(()=>{btn.innerHTML=o;btn.classList.remove("copied");}, 1500); };
-    if (navigator.clipboard) navigator.clipboard.writeText(coords).then(success).catch(()=>fallback(coords)&&success());
-    else fallback(coords) && success();
-  };
-  function fallback(t){try{const ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.left="-9999px";document.body.appendChild(ta);ta.select();const s=document.execCommand("copy");document.body.removeChild(ta);return s;}catch(e){return false;}}
-
-  // Hook render() to add panels to cards
-  function hookRender() {
-    if (typeof window.render !== "function") { setTimeout(hookRender, 100); return; }
-    const orig = window.render;
-    window.render = function() {
-      orig();
-      document.querySelectorAll(".card[data-sno]").forEach(card => {
-        if (card.querySelector(".coord-panel")) return;
-        const sno = parseInt(card.dataset.sno);
-        const temple = TEMPLES.find(x => x.sno === sno);
-        if (temple) card.insertAdjacentHTML("beforeend", buildCoordPanel(temple));
-      });
+    const success = function() {
+      const o = btn.innerHTML;
+      btn.innerHTML = "✓ Copied!";
+      btn.classList.add("copied");
+      setTimeout(function() { btn.innerHTML = o; btn.classList.remove("copied"); }, 1500);
     };
-    window.render();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(coords).then(success).catch(function() { fallback(coords) && success(); });
+    } else {
+      fallback(coords) && success();
+    }
+  };
+  function fallback(t) {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = t;
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      const s = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return s;
+    } catch(e) { return false; }
   }
 
-  // Hook popupHtml() to add panel to popups
-  function hookPopups() {
-    if (typeof window.popupHtml !== "function") { setTimeout(hookPopups, 100); return; }
-    const orig = window.popupHtml;
-    window.popupHtml = function(t) {
-      return orig(t) + buildCoordPanel(t);
-    };
+  // Inject coords + audio panel into right-side cards (after every render)
+  function injectCardPanels() {
+    document.querySelectorAll('.card[data-sno]').forEach(function(card) {
+      if (card.querySelector('.coord-panel')) return; // already injected
+      const sno = parseInt(card.dataset.sno);
+      const temple = TEMPLES.find(function(x) { return x.sno === sno; });
+      if (temple) card.insertAdjacentHTML('beforeend', buildCoordPanel(temple));
+    });
+  }
+
+  // Watch for card list changes (filtering, searching) and re-inject
+  function watchCards() {
+    const cardsContainer = document.getElementById('cards');
+    if (!cardsContainer) { setTimeout(watchCards, 200); return; }
+    
+    // Initial injection
+    injectCardPanels();
+    
+    // Watch for future changes
+    const observer = new MutationObserver(function() {
+      setTimeout(injectCardPanels, 10);
+    });
+    observer.observe(cardsContainer, { childList: true, subtree: false });
   }
 
   // ============================================================
   // BOOT
   // ============================================================
-  
-  
-function boot() {
-  applyDataPatches();
-  setupLangToggle();
-  hookRender();
-  
-  if (typeof gtag === "function") {
-    gtag('event', 'patch_loaded', { event_category: 'v3', event_label: 'pps_v3_patch' });
-  }
-}  // initial pass
-  
-  // Hook into future renders too
-  if (typeof window.render === "function") {
-    const origRender = window.render;
-    window.render = function() {
-      origRender();
-      setTimeout(enhanceCards, 10);  // run after DOM updates
-    };
+  function boot() {
+    applyDataPatches();
+    setupLangToggle();
+    watchCards();
+    
+    if (typeof gtag === "function") {
+      gtag('event', 'patch_loaded', { event_category: 'v3', event_label: 'pps_v3_patch' });
+    }
   }
   
-  // Also observe DOM changes (handles filter changes, search, etc.)
-  const cardsContainer = document.getElementById('cards');
-  if (cardsContainer) {
-    const observer = new MutationObserver(() => {
-      setTimeout(enhanceCards, 10);
-    });
-    observer.observe(cardsContainer, { childList: true });
-  }
-  
-  if (typeof gtag === "function") {
-    gtag('event', 'patch_loaded', { event_category: 'v3', event_label: 'pps_v3_patch' });
-  }
-}
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
   } else {
