@@ -483,17 +483,69 @@
   // ============================================================
   // BOOT
   // ============================================================
-  function boot() {
-    applyDataPatches();
-    setupLangToggle();
-    hookRender();
-    hookPopups();
+  
+  function enhanceCards() {
+  if (typeof TEMPLES === "undefined") { setTimeout(enhanceCards, 100); return; }
+  
+  const cards = document.querySelectorAll('.card[data-sno]');
+  let enhanced = 0;
+  
+  cards.forEach(card => {
+    if (card.querySelector('.card-name-ta')) return; // already has Tamil
     
-    // Track patch load with Google Analytics if present
-    if (typeof gtag === "function") {
-      gtag('event', 'patch_loaded', { event_category: 'v3', event_label: 'pps_v3_patch' });
+    const sno = parseInt(card.dataset.sno);
+    const t = TEMPLES.find(x => x.sno === sno);
+    if (!t || !t.name_ta) return;
+    
+    // Find the .card-name span and add Tamil name right after it
+    const nameEl = card.querySelector('.card-name');
+    if (!nameEl) return;
+    
+    const taDiv = document.createElement('div');
+    taDiv.className = 'card-name-ta-injected';
+    taDiv.textContent = t.name_ta;
+    taDiv.style.cssText = 'font-family:"Noto Serif Tamil",serif;font-size:0.9rem;color:#A0522D;font-weight:600;margin-top:3px;width:100%;display:block;';
+    
+    // Insert after the card-head div
+    const head = card.querySelector('.card-head');
+    if (head) {
+      head.insertAdjacentElement('afterend', taDiv);
+      enhanced++;
     }
+  });
+  
+  if (enhanced > 0) {
+    console.log("[pps_v3_patch] Enhanced", enhanced, "cards with Tamil names");
   }
+}
+ function boot() {
+  applyDataPatches();
+  setupLangToggle();
+  hookRender();
+  enhanceCards();  // initial pass
+  
+  // Hook into future renders too
+  if (typeof window.render === "function") {
+    const origRender = window.render;
+    window.render = function() {
+      origRender();
+      setTimeout(enhanceCards, 10);  // run after DOM updates
+    };
+  }
+  
+  // Also observe DOM changes (handles filter changes, search, etc.)
+  const cardsContainer = document.getElementById('cards');
+  if (cardsContainer) {
+    const observer = new MutationObserver(() => {
+      setTimeout(enhanceCards, 10);
+    });
+    observer.observe(cardsContainer, { childList: true });
+  }
+  
+  if (typeof gtag === "function") {
+    gtag('event', 'patch_loaded', { event_category: 'v3', event_label: 'pps_v3_patch' });
+  }
+}
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
   } else {
