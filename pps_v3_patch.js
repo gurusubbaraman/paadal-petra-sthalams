@@ -584,4 +584,52 @@
       }
     }
   }, true);
+
+    // ============================================================
+  // K. BUILD HERO IMAGE (avoids HTML escaping issues)
+  // ============================================================
+  function buildHero() {
+    const placeholder = document.getElementById('hero-placeholder');
+    if (!placeholder) return;
+    
+    const hero = document.createElement('div');
+    hero.className = 'hero-image';
+    hero.style.cssText = 'position:relative;width:100%;max-height:360px;overflow:hidden;background:#2A1810;border-bottom:3px solid #D4AF37';
+    
+    const img = document.createElement('img');
+    img.src = 'naalvar-cover.jpeg';
+    img.alt = 'The Naalvar — Sambandar, Appar, Sundarar, Manikkavasakar — worshipping at a Shiva shrine';
+    img.style.cssText = 'width:100%;height:auto;max-height:360px;object-fit:cover;object-position:center 35%;display:block';
+    img.onerror = function() {
+      hero.style.background = 'linear-gradient(135deg,#D2691E,#A0522D)';
+      hero.style.height = '200px';
+      img.style.display = 'none';
+    };
+    
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:linear-gradient(180deg,transparent 0%,rgba(42,24,16,0.9) 100%);padding:40px 24px 16px;color:#fff';
+    
+    const captionEn = document.createElement('div');
+    captionEn.textContent = 'The Naalvar — the four Saiva poet-saints whose hymns define these 276 sthalas';
+    captionEn.style.cssText = 'font-size:0.95rem;font-weight:500;margin-bottom:4px';
+    
+    const captionTa = document.createElement('div');
+    captionTa.textContent = 'நால்வர் — இந்த 276 தலங்களை இசை பாடிய சைவ நாயன்மார்கள்';
+    captionTa.style.cssText = 'font-family:"Noto Serif Tamil",serif;font-size:0.9rem;color:#D4AF37;font-weight:500';
+    
+    overlay.appendChild(captionEn);
+    overlay.appendChild(captionTa);
+    hero.appendChild(img);
+    hero.appendChild(overlay);
+    
+    placeholder.replaceWith(hero);
+  }
+
+  // Run hero builder right away
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", buildHero);
+  } else {
+    buildHero();
+  }
+  
 })();
