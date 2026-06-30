@@ -599,7 +599,7 @@
     // Build hero image element
     const hero = document.createElement('div');
     hero.className = 'hero-image';
-    hero.setAttribute('style', 'position:static;width:100%;max-height:360px;overflow:hidden;background:#2A1810;border-bottom:3px solid #D4AF37;display:block;');
+    hero.setAttribute('style', 'position:relative;width:100%;height:360px;overflow:hidden;background:#2A1810;border-bottom:3px solid #D4AF37;display:block;z-index:1;');
     
     const img = document.createElement('img');
     img.src = 'naalvar-cover.jpeg';
