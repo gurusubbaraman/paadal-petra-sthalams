@@ -207,7 +207,31 @@ const REGIONS = ["Chola Nadu (North of Kaveri)", "Chola Nadu (South of Kaveri)",
 const TIER_COLORS = {T1:"#D4AF37", T2:"#FF8C00", T3:"#87CEEB", T4:"#999999"};
 const state = {search:"", tiers:new Set(["T1","T2","T3","T4"]), regions:new Set(REGIONS)};
 const map = L.map('map', {zoomControl:true}).setView([11,79], 6);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution:'&copy; OpenStreetMap',maxZoom:18}).addTo(map);
+const baseMaps = {
+  "🗺️ Streets (OSM)": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; https://www.openstreetmap.org/copyrightOpenStreetMap</a> contributors',
+    maxZoom: 19
+  }),
+  "🛰️ Satellite (Esri)": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; https://www.esri.com &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community',
+    maxZoom: 19
+  }),
+  "🌍 National Geographic (Esri)": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; https://www.esri.com &mdash; National Geographic, Esri, DeLorme, NAVTEQ, USGS',
+    maxZoom: 16
+  })
+};
+
+// Set OSM Streets as the default basemap
+baseMaps["🗺️ Streets (OSM)"].addTo(map);
+
+// Add the layer-switcher control to the top-right of the map
+L.control.layers(baseMaps, null, {
+  position: 'topright',
+  collapsed: true  // shows a tidy icon; expands on hover
+}).addTo(map);
+
+  
 const markerLayer = L.layerGroup().addTo(map);
 const markersBySno = new Map();
 function escapeHtml(s){return String(s).replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
