@@ -611,7 +611,7 @@
   }
 
     // ============================================================
-  // L. HERO PARALLAX FADE-OUT ON SCROLL
+  // L. HERO PARALLAX FADE-OUT ON SCROLLING
   // ============================================================
   function setupHeroParallax() {
     const hero = document.querySelector('.hero-image');
