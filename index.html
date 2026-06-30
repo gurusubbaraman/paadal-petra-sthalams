@@ -93,7 +93,20 @@ footer a{color:var(--gold)}
   .hdr-stats{display:none}
   .hdr-title{font-size:1.1rem}
 }
-  .hero-image{position:static !important;top:auto !important}
+  /* Force the hero image to NEVER be sticky/fixed */
+.hero-image,
+.hero-image * {
+  position: static !important;
+  top: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+}
+
+/* Also handle if a parent wrapper is sticky */
+body > .hero-image {
+  position: relative !important;
+  z-index: 1;
+}
 
 </style>
 
