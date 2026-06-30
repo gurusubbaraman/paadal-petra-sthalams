@@ -519,12 +519,91 @@
     setupLangToggle();
     watchCards();
     buildHero();
+    rebuildFooter();
     setupHeroParallax();
     if (typeof gtag === "function") {
       gtag('event', 'patch_loaded', { event_category: 'v3', event_label: 'pps_v3_patch' });
     }
   }
 
+  // ============================================================
+  // M. REBUILD FOOTER (avoids HTML escaping issues)
+  // ============================================================
+  function rebuildFooter() {
+    const footer = document.querySelector('footer');
+    if (!footer) return;
+    
+    footer.innerHTML = '';
+    
+    function makeLink(text, href, color) {
+      const a = document.createElement('a');
+      a.href = href;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = text;
+      if (color) a.style.color = color;
+      return a;
+    }
+    
+    function makeKbd(text) {
+      const k = document.createElement('span');
+      k.className = 'kbd';
+      k.textContent = text;
+      return k;
+    }
+    
+    function makeRow(labelText, parts, isCta) {
+      const div = document.createElement('div');
+      div.className = 'footer-row' + (isCta ? ' footer-cta' : '');
+      if (labelText) {
+        const strong = document.createElement('strong');
+        strong.textContent = labelText + ' ';
+        div.appendChild(strong);
+      }
+      parts.forEach(function(p) {
+        if (typeof p === 'string') {
+          div.appendChild(document.createTextNode(p));
+        } else {
+          div.appendChild(p);
+        }
+      });
+      footer.appendChild(div);
+    }
+    
+    // Row 1: Sources
+    makeRow('Sources:', [
+      '276 list from aanmeegam.org & Wikipedia · coordinates curated & geocoded via OpenStreetMap Nominatim · Tamil names from Tamil Wikipedia, shaivam.org, greenmesg.org · Kalvettu references from ',
+      makeLink('SII Vols I-XIX (archive.org)', 'https://archive.org/details/in.ernet.dli.2015.95780'),
+      ', ASI Annual Reports on Epigraphy, and ',
+      makeLink('whatisindia.com', 'https://www.whatisindia.com/inscriptions/south_indian_inscriptions/'),
+      '.'
+    ]);
+    
+    // Row 2: Map credits
+    makeRow('Map credits:', [
+      'Streets map data © ',
+      makeLink('OpenStreetMap', 'https://www.openstreetmap.org/copyright'),
+      ' contributors · Satellite & topographic basemaps © ',
+      makeLink('Esri', 'https://www.esri.com'),
+      ', Maxar, Earthstar Geographics, National Geographic, USGS & the GIS User Community.'
+    ]);
+    
+    // Row 3: Shortcuts
+    makeRow('Shortcuts:', [
+      makeKbd('/'), ' search · ',
+      makeKbd('r'), ' reset · ',
+      makeKbd('1-4'), ' toggle tiers'
+    ]);
+    
+    // Row 4: Call to action
+    makeRow(null, [
+      '📝 Spotted an error? ',
+      makeLink('Suggest a correction →', 'https://github.com/gurusubbaraman/paadal-petra-sthalams/issues/new/choose', '#D4AF37'),
+      ' · ',
+      makeLink('View source on GitHub', 'https://github.com/gurusubbaraman/paadal-petra-sthalams', '#D4AF37')
+    ], true);
+  }
+  
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
   } else {
