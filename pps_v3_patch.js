@@ -352,6 +352,11 @@
       if (searchEl) searchEl.placeholder = newLang === "ta" ? "கோயில், ஊர், மாவட்டம் தேடுக..." : "Search temple, town, district...";
       const resetEl = document.getElementById("reset");
       if (resetEl) resetEl.textContent = newLang === "ta" ? "மீட்டமை" : "Reset";
+      // Update the Tier label
+      const tierLbl = document.querySelector('.label-mini');
+      if (tierLbl) tierLbl.textContent = newLang === "ta" 
+        ? "கல்வெட்டு ஆவணப்படுத்தும் நிலைகள்:"
+        : "Tiers of Epigraphy / கல்வெட்டு:";
       if (typeof window.render === "function") window.render();
     };
     document.body.appendChild(btn);
