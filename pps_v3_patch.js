@@ -318,9 +318,15 @@
     let taApplied = 0, wikiFixed = 0;
     TEMPLES.forEach(function(t) {
       if (!t.name_ta && NAME_TA_MORE[t.name]) { t.name_ta = NAME_TA_MORE[t.name]; taApplied++; }
-      const newWiki = WIKI_OVERRIDES[t.name] || (t.wiki && t.wiki.indexOf("?search=") !== -1
-        ? "https://en.wikipedia.org/wiki/Special:Search?search=" + encodeURIComponent(t.name + " Temple " + t.town) + "&go=Go"
-        : t.wiki);
+      // Use Special:Search?go=Go for ALL temples — eliminates 404s entirely.
+// If the article exists, Wikipedia auto-redirects to it.
+// If renamed, the redirect chain handles it.
+// If missing, user sees relevant search results.
+const searchQuery = t.name + " Temple " + t.town;
+const safeFallback = "https://en.wikipedia.org/wiki/Special:Search?search=" + encodeURIComponent(searchQuery) + "&go=Go";
+
+// Prefer curated direct URL if it exists, but fall back to safe search URL
+const newWiki = WIKI_OVERRIDES[t.name] || safeFallback;
       t.wiki_en = newWiki;
       t.wiki_ta = TAMIL_WIKI_OVERRIDES[t.name] || newWiki;
       t.wiki = newWiki;
