@@ -74,7 +74,12 @@ main{display:flex;height:calc(100vh - 160px);min-height:500px}
 .popup-row{font-size:.8rem;margin-bottom:3px}
 .popup-row strong{color:var(--ink)}
 .popup-links{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;font-size:.76rem}
-footer{background:var(--ink);color:#d4c4ad;padding:12px 24px;font-size:.76rem;text-align:center;line-height:1.6}
+footer{background:var(--ink);color:#d4c4ad;padding:14px 24px;font-size:.78rem;line-height:1.6}
+.footer-row{margin-bottom:8px;text-align:center}
+.footer-row:last-child{margin-bottom:0}
+.footer-row strong{color:#D4AF37;margin-right:4px}
+.footer-cta{margin-top:6px;padding-top:8px;border-top:1px solid #3a2818}
+@media(max-width:900px){footer{font-size:.72rem}.footer-row{text-align:left}}
 footer a{color:var(--gold)}
 .kbd{display:inline-block;padding:1px 6px;border-radius:3px;background:#3a2818;font-family:monospace;font-size:.76rem;border:1px solid #5a4028}
 
@@ -193,16 +198,45 @@ header{
 </main>
 <footer>
 <footer>
-  Sources: 276 list from aanmeegam.org &amp; Wikipedia &middot; coordinates curated and geocoded via OpenStreetMap Nominatim &middot; Tamil names from Tamil Wikipedia, shaivam.org, greenmesg.org &middot; Kalvettu references from <a href="https://archive.org/details/in.ernet.dli.2015.95780" target="_blank">SII Vols I-XIX (archive.org)</a>, ASI Annual Reports on Epigraphy, and <a href="https://www.whatisindia.com/inscriptions/south_indian_inscriptions/" target="_blank">whatisindia.com</a>.
-  &nbsp;&nbsp; Shortcuts: <span class="kbd">/</span> search &middot; <span class="kbd">r</span> reset &middot; <span class="kbd">1-4</span> toggle tiers
-  <div style="margin-top:8px">
-        </a>
-    <!-- In your footer -->
-<div style="margin-top:8px;font-size:.72rem;opacity:.7">
-  Map data &copy; https://www.openstreetmap.org/copyrightOpenStreetMap</a> contributors. 
-  Satellite, topographic & cartographic basemaps &copy; ri.com" target="_blank" style="color:#D4AF37">Esri</a>, 
-  Maxar, Earthstar Geographics, and the GIS User Community.
+  <div class="footer-row">
+    <strong>Sources:</strong>
+    276 list from aanmeegam.org &amp; Wikipedia &middot;
+    coordinates curated &amp; geocoded via OpenStreetMap Nominatim &middot;
+    Tamil names from Tamil Wikipedia, shaivam.org, greenmesg.org &middot;
+    Kalvettu references from
+    https://archive.org/details/in.ernet.dli.2015.95780SII Vols I-XIX (archive.org)</a>,
+    ASI Annual Reports on Epigraphy, and
+    .com/inscriptions/south_indian_inscriptions/" target="_blank">whatisindia.com</a>.
+  </div>
 
+  <div class="footer-row">
+    <strong>Map credits:</strong>
+    Streets map data &copy;
+    https://www.openstreetmap.org/copyrightOpenStreetMap</a> contributors &middot;
+    Satellite &amp; topographic basemaps &copy;
+    https://www.esri.comEsri</a>, Maxar, Earthstar Geographics, National Geographic, USGS &amp; the GIS User Community.
+  </div>
+
+  <div class="footer-row">
+    <strong>Shortcuts:</strong>
+    <span class="kbd">/</span> search &middot;
+    <span class="kbd">r</span> reset &middot;
+    <span class="kbd">1-4</span> toggle tiers
+  </div>
+
+  <div class="footer-row footer-cta">
+    📝 Spotted an error?
+    SERNAME/paadal-petra-sthalams/issues/new/choose"
+       target="_blank"
+       style="color:#D4AF37;font-weight:600">
+      Suggest a correction &rarr;
+    </a>
+    &middot;
+    
+       target="_blank"
+       style="color:#D4AF37">
+      View source on GitHub
+    </a>
   </div>
 </footer>
 
