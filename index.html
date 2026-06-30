@@ -108,6 +108,29 @@ body > .hero-image {
   z-index: 1;
 }
 
+/* Hero image: scrolls naturally, doesn't fight sticky elements */
+.hero-image{
+  position:relative !important;
+  height:360px;
+  z-index:1;
+  margin-top:0;
+}
+
+/* Make sure the sticky header sits ABOVE the hero (which is below it in document order) */
+header{
+  z-index:1000 !important;
+}
+
+/* Filters bar also stays above the hero on scroll */
+.filters{
+  z-index:999 !important;
+}
+
+/* Mobile: smaller hero so it doesn't dominate small screens */
+@media (max-width:900px){
+  .hero-image{height:200px !important}
+}
+  
 </style>
 
 
