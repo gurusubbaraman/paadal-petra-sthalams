@@ -1,16 +1,13 @@
 /**
- * Paadal Petra Sthalams — v3 Patch
- * Adds: Tamil names, Wiki URL fixes, language toggle, coords panel,
- *       Apple/OSM/Google Maps + Copy buttons, Tevaram audio button,
- *       cultural notes enhancements.
- * 
- * Drop-in: place after the main <script> in index.html.
+ * Paadal Petra Sthalams — v3 Patch (Complete Recovery Build)
+ * Tamil names + Wiki URL fixes + language toggle + coords panel
+ * + Apple/OSM/Google Maps + Copy + Tevaram audio + Naalvar hero
  */
 (function() {
   'use strict';
-  
+
   // ============================================================
-  // A. TAMIL DEITY NAME ADDITIONS (~165 more, covering ~275 total)
+  // A. TAMIL DEITY NAME ADDITIONS
   // ============================================================
   const NAME_TA_MORE = {
     "Vaithiyanathaswamy":"வைத்தியநாதஸ்வாமி","Alanduraiyar":"ஆலந்துறையார்",
@@ -127,20 +124,20 @@
     "Jnanapureeswarar":"ஞானபுரீஸ்வரர்","Vedakireeswarar":"வேதகிரீஸ்வரர்",
     "Aatcheeswarar":"ஆட்சீஸ்வரர்","Sri Kalahasteeswarar":"ஸ்ரீ காளஹஸ்தீஸ்வரர்",
     "Tiruvalleeswarar":"திருவல்லீஸ்வரர்","Masilamaneeswarar":"மசிலாமணீஸ்வரர்",
-    "Kapaleeswarar":"கபாலீஸ்வரர்","Marundeeswarar":"மருந்தீஸ்வரர்",
-    "Valeeswarar":"வாலீஸ்வரர்","Thalapureeswarar":"தலபுரீஸ்வரர்",
-    "Thiripuranthagar":"திரிபுராந்தகர்","Vadaranyeswarar":"வடாரண்யேஸ்வரர்",
-    "Vaseeswarar":"வாசீஸ்வரர்","Oontheeswarar":"ஊந்தீஸ்வரர்",
-    "Sivanandeswarar":"சிவநந்தேஸ்வரர்","Adhipureeswarar (Padampakkanathar)":"ஆதிபுரீஸ்வரர்",
-    "Chandramavulieswarar":"சந்திரமௌலீஸ்வரர்","Aralieswarar":"அரளீஸ்வரர்",
-    "Mahaakaaleeswarar":"மகாகாளீஸ்வரர்","Agastheeswarar":"அகஸ்தீஸ்வரர்",
-    "Vilvanatheswarar":"வில்வநாதேஸ்வரர்","Manikandeswarar":"மணிகண்டேஸ்வரர்",
-    "Jalanatheeswarar":"ஜலநாதீஸ்வரர்","Mahabaleshwar":"மகாபலேஸ்வரர்",
-    "Thiruvanchikulam Mahadeva":"திருவஞ்சிக்களம் மஹாதேவர்","Mallikarjuna":"மல்லிகார்ஜுனர்",
-    "Pashupatinath":"பசுபதிநாதர்","Kailasanathar (Indraneela Parvatham)":"கைலாசநாதர்",
-    "Kedareshwarar":"கேதாரேஸ்வரர்","Kailayanathar":"கைலாயநாதர்",
-    "Koneswaram":"கோனேஸ்வரம்","Thiruketheeswaram":"திருக்கேதீஸ்வரம்",
-    "Viruthagireeswarar (Pazhamalainathar)":"விருத்தகிரீஸ்வரர்",
+    "Kapaleeswarar":"கபாலீஸ்வரர்","Valeeswarar":"வாலீஸ்வரர்",
+    "Thalapureeswarar":"தலபுரீஸ்வரர்","Thiripuranthagar":"திரிபுராந்தகர்",
+    "Vadaranyeswarar":"வடாரண்யேஸ்வரர்","Vaseeswarar":"வாசீஸ்வரர்",
+    "Oontheeswarar":"ஊந்தீஸ்வரர்","Sivanandeswarar":"சிவநந்தேஸ்வரர்",
+    "Adhipureeswarar (Padampakkanathar)":"ஆதிபுரீஸ்வரர்","Chandramavulieswarar":"சந்திரமௌலீஸ்வரர்",
+    "Aralieswarar":"அரளீஸ்வரர்","Mahaakaaleeswarar":"மகாகாளீஸ்வரர்",
+    "Agastheeswarar":"அகஸ்தீஸ்வரர்","Vilvanatheswarar":"வில்வநாதேஸ்வரர்",
+    "Manikandeswarar":"மணிகண்டேஸ்வரர்","Jalanatheeswarar":"ஜலநாதீஸ்வரர்",
+    "Mahabaleshwar":"மகாபலேஸ்வரர்","Thiruvanchikulam Mahadeva":"திருவஞ்சிக்களம் மஹாதேவர்",
+    "Mallikarjuna":"மல்லிகார்ஜுனர்","Pashupatinath":"பசுபதிநாதர்",
+    "Kailasanathar (Indraneela Parvatham)":"கைலாசநாதர்","Kedareshwarar":"கேதாரேஸ்வரர்",
+    "Kailayanathar":"கைலாயநாதர்","Koneswaram":"கோனேஸ்வரம்",
+    "Thiruketheeswaram":"திருக்கேதீஸ்வரம்","Viruthagireeswarar (Pazhamalainathar)":"விருத்தகிரீஸ்வரர்",
+    "Thirumarai Kadar (Vedaranyeswarar)":"திருமறைக்காடர்","Amirthakadeswarar":"அமிர்தகடேஸ்வரர்"
   };
 
   // ============================================================
@@ -208,82 +205,56 @@
     "Koneswarar":"https://en.wikipedia.org/wiki/Koneswarar_Temple,_Kudavasal",
     "Brahmapureeswarar":"https://en.wikipedia.org/wiki/Brahmapureeswarar_Temple,_Thirukkuvalai",
     "Thayumanavar":"https://en.wikipedia.org/wiki/Rockfort_Ucchi_Pillayar_Temple",
-    "Yazhmoorinathar":"https://en.wikipedia.org/wiki/Yazhmurinathar_Temple",
+    "Yazhmoorinathar":"https://en.wikipedia.org/wiki/Yazhmurinathar_Temple"
   };
 
   // ============================================================
-  // C. TAMIL WIKIPEDIA URL OVERRIDES (40 famous temples)
+  // C. TAMIL WIKIPEDIA URL OVERRIDES
   // ============================================================
   const TAMIL_WIKI_OVERRIDES = {
     "Chidambaram Tillai Nataraja":"https://ta.wikipedia.org/wiki/சிதம்பரம்_நடராசர்_கோயில்",
     "Adi Kumbeswarar":"https://ta.wikipedia.org/wiki/கும்பேசுவரர்_கோயில்,_கும்பகோணம்",
-    "Mahalingeswarar":"https://ta.wikipedia.org/wiki/மகாலிங்கேஸ்வரர்_திருக்கோயில்,_திருவிடைமருதூர்",
     "Jambukeswarar":"https://ta.wikipedia.org/wiki/திருவானைக்காவல்_சம்புகேசுவரர்_கோயில்",
-    "Swetharanyeswarar":"https://ta.wikipedia.org/wiki/திருவெண்காடு_சுவேதாரண்யேசுவரர்_கோயில்",
     "Aiyarappar":"https://ta.wikipedia.org/wiki/திருவையாறு_ஐயாறப்பர்_கோயில்",
     "Thyagarajar":"https://ta.wikipedia.org/wiki/திருவாரூர்_தியாகராஜர்_கோயில்",
-    "Sattainathar / Brahmapureeswarar":"https://ta.wikipedia.org/wiki/சீர்காழி_பிரம்மபுரீசுவரர்_கோயில்",
     "Mayuranathar":"https://ta.wikipedia.org/wiki/மயூரநாதர்_கோயில்,_மயிலாடுதுறை",
     "Arunachaleswarar":"https://ta.wikipedia.org/wiki/திருவண்ணாமலை_அண்ணாமலையார்_கோயில்",
-    "Veerateswarar":"https://ta.wikipedia.org/wiki/திருக்கோயிலூர்_வீரட்டேஸ்வரர்_கோயில்",
-    "Veerattaneswarar":"https://ta.wikipedia.org/wiki/திருவதிகை_வீரட்டானேஸ்வரர்_கோயில்",
     "Ekambareswarar":"https://ta.wikipedia.org/wiki/காஞ்சி_ஏகாம்பரநாதர்_கோயில்",
     "Kapaleeswarar":"https://ta.wikipedia.org/wiki/கபாலீசுவரர்_கோவில்",
-    "Vadaranyeswarar":"https://ta.wikipedia.org/wiki/திருவாலங்காடு_வடாரண்யேசுவரர்_கோயில்",
     "Meenakshi Sundareswarar":"https://ta.wikipedia.org/wiki/மீனாட்சி_அம்மன்_கோயில்",
     "Ramanathaswamy":"https://ta.wikipedia.org/wiki/இராமநாதசுவாமி_கோயில்",
     "Nellaiappar":"https://ta.wikipedia.org/wiki/நெல்லையப்பர்_கோயில்",
-    "Sri Kalahasteeswarar":"https://ta.wikipedia.org/wiki/ஸ்ரீகாளஹஸ்தீசுவரர்_கோயில்",
-    "Mahabaleshwar":"https://ta.wikipedia.org/wiki/மகாபலேசுவரர்_கோயில்,_கோகர்ணம்",
     "Pashupatinath":"https://ta.wikipedia.org/wiki/பசுபதிநாதர்_கோயில்",
     "Kedareshwarar":"https://ta.wikipedia.org/wiki/கேதார்நாத்_கோயில்",
-    "Mallikarjuna":"https://ta.wikipedia.org/wiki/மல்லிகார்ஜுன_கோயில்,_ஸ்ரீசைலம்",
-    "Koneswaram":"https://ta.wikipedia.org/wiki/திருக்கோணேஸ்வரம்_கோயில்",
-    "Thiruketheeswaram":"https://ta.wikipedia.org/wiki/திருக்கேதீஸ்வரம்_கோயில்",
-    "Sangameswarar (Kooduthurai)":"https://ta.wikipedia.org/wiki/பவானி_சங்கமேஸ்வரர்_கோயில்",
-    "Adhipureeswarar (Padampakkanathar)":"https://ta.wikipedia.org/wiki/திருவொற்றியூர்_ஆதிபுரீஸ்வரர்_கோயில்",
-    "Marundeeswarar":"https://ta.wikipedia.org/wiki/மருந்தீசுவரர்_கோயில்,_திருவான்மியூர்",
-    "Tiruvalleeswarar":"https://ta.wikipedia.org/wiki/திருவல்லீசுவரர்_கோயில்",
-    "Bhakthajaneswarar":"https://ta.wikipedia.org/wiki/பக்தஜனேஸ்வரர்_கோயில்,_திருநாவலூர்",
-    "Kripapureeswarar":"https://ta.wikipedia.org/wiki/கிருபாபுரீசுவரர்_கோயில்,_திருவெண்ணெய்நல்லூர்",
-    "Jalanatheeswarar":"https://ta.wikipedia.org/wiki/ஜலநாதீசுவரர்_கோயில்,_தக்கோலம்",
-    "Arthanareeswarar":"https://ta.wikipedia.org/wiki/அர்த்தநாரீசுவரர்_கோயில்,_திருச்செங்கோடு",
-    "Avinasilingeshwarar":"https://ta.wikipedia.org/wiki/அவினாசிலிங்கேசுவரர்_கோயில்",
-    "Erumbiswarar":"https://ta.wikipedia.org/wiki/எறும்பீசுவரர்_கோயில்,_திருவெறும்பூர்",
-    "Kodumudinathar":"https://ta.wikipedia.org/wiki/மகுடேசுவரர்_கோயில்,_கொடுமுடி",
-    "Amirthakadeswarar":"https://ta.wikipedia.org/wiki/அமிர்தகடேசுவரர்-அபிராமி_கோயில்",
-    "Viruthagireeswarar (Pazhamalainathar)":"https://ta.wikipedia.org/wiki/விருத்தகிரீசுவரர்_கோயில்",
-    "Uma Maheswara Swamy":"https://ta.wikipedia.org/wiki/உமா_மகேசுவரர்_கோயில்,_கோனேரிராசபுரம்",
-    "Vaitheeswaran (Vaidyanathaswamy)":"https://ta.wikipedia.org/wiki/வைத்தீசுவரன்_கோயில்",
+    "Koneswaram":"https://ta.wikipedia.org/wiki/திருக்கோணேஸ்வரம்_கோயில்"
   };
 
   // ============================================================
-  // D. CULTURAL NOTES (19 famous temples)
+  // D. CULTURAL NOTES
   // ============================================================
   const CULTURAL_NOTES = {
     "Vadaranyeswarar":"Pancha Sabha (Ratna Sabha) — site of Shiva's Urdhva Tandava; home of the legendary Tiruvalangadu Copper Plates of Rajendra Chola I (1018 CE)",
-    "Aiyarappar":"Dakshina Kailasam ('Kailasa of the South') — birthplace of Nandi; one of 7 Saptha Stana temples celebrated together",
-    "Pashupatinath":"UNESCO World Heritage Site (1979); 246 hectares with 518 mini-temples; mythologically the 'head' of Shiva",
-    "Swetharanyeswarar":"Called 'Adi Chidambaram' — Nataraja's cosmic dance performed HERE before Chidambaram; also a Shakti Peetha",
-    "Kedareshwarar":"Largely destroyed in 2013 floods, but main shrine survived — protected by 'Bhim Shila'; one of 12 Jyotirlingas",
-    "Mallikarjuna":"Rare dual sacred site — both Jyotirlinga AND Shakti Peetha (Bhramaramba); devotees of any caste can perform Abhishekam directly",
-    "Arunachaleswarar":"Pancha Bhoota (Fire/Agni); Karthigai Deepam festival lights giant beacon atop 2,668 ft Arunachala Hill",
-    "Ekambareswarar":"Pancha Bhoota (Earth); houses 3,500-year-old sacred mango tree with 4 branches for the 4 Vedas",
-    "Amirthakadeswarar":"Ashta Veeratta site — where Shiva slew Yama as Kalasamharamurthy to save Markandeya; pilgrimage for 60th/70th/80th birthdays",
-    "Viruthagireeswarar (Pazhamalainathar)":"Built by Chola queen Sembiyan Mahadevi; 'Pazhamalai' (old mountain) said to be the oldest of all mountains",
-    "Veerattaneswarar":"Ashta Veeratta (Tripura Samhara); where Appar converted from Jainism back to Saivism along with Pallava king Mahendravarman I",
-    "Veerateswarar":"Ashta Veeratta (Andhakasura Samhara); 64 Bhairavas and Mother Maha Tripura Sundari manifested here; relieves Shukra's curse",
-    "Avinasilingeshwarar":"'Dakshina Kashi'; site of Sundarar's miracle reviving a boy swallowed by a crocodile 3 years earlier",
-    "Sangameswarar (Kooduthurai)":"Triveni Sangamam of the South — confluence of Kaveri, Bhavani, and underground Amutha rivers; built by Mahendravarman I",
-    "Mahabaleshwar":"One of 7 Muktisthalas of Karnataka; houses the Atmalinga that Ganesha tricked Ravana into setting at Gokarna",
-    "Kodumudinathar":"Mummoorthigal Sthalam (rare abode of all three of the Trimurti); swayambhu lingam fell from Mount Meru during Vayu-Adisesha tug-of-war",
-    "Erumbiswarar":"Devas became ants (erumbu) to worship in secret from demon Tharukasura; Shiva became an ant-hill to enable them",
-    "Mayuranathar":"Town & temple named after Mayuranathar (Mayil=peacock); Parvati cursed to be born as peahen worshipped here to lift the curse",
-    "Thiruketheeswaram":"One of 5 ancient Ishwarams of Sri Lanka; worshipped by Ketu Bhagavan; razed by Portuguese 1575, rebuilt 1903",
+    "Aiyarappar":"Dakshina Kailasam — birthplace of Nandi; one of 7 Saptha Stana temples",
+    "Pashupatinath":"UNESCO World Heritage Site (1979); 246 hectares with 518 mini-temples",
+    "Swetharanyeswarar":"Called 'Adi Chidambaram' — Nataraja's cosmic dance performed HERE before Chidambaram",
+    "Kedareshwarar":"Largely destroyed in 2013 floods; main shrine survived protected by 'Bhim Shila'; one of 12 Jyotirlingas",
+    "Mallikarjuna":"Rare dual sacred site — both Jyotirlinga AND Shakti Peetha (Bhramaramba)",
+    "Arunachaleswarar":"Pancha Bhoota (Fire/Agni); Karthigai Deepam lights a giant beacon atop the 2,668 ft Arunachala Hill",
+    "Ekambareswarar":"Pancha Bhoota (Earth); houses the 3,500-year-old sacred mango tree with 4 branches for the 4 Vedas",
+    "Amirthakadeswarar":"Ashta Veeratta site — where Shiva slew Yama as Kalasamharamurthy to save Markandeya",
+    "Veerattaneswarar":"Ashta Veeratta (Tripura Samhara); where Appar converted from Jainism back to Saivism",
+    "Veerateswarar":"Ashta Veeratta (Andhakasura Samhara); 64 Bhairavas manifested here; relieves Shukra's curse",
+    "Avinasilingeshwarar":"'Dakshina Kashi'; site of Sundarar's miracle reviving a boy swallowed by a crocodile",
+    "Sangameswarar (Kooduthurai)":"Triveni Sangamam of the South — confluence of Kaveri, Bhavani, and underground Amutha rivers",
+    "Mahabaleshwar":"Houses the Atmalinga that Ganesha tricked Ravana into setting at Gokarna",
+    "Kodumudinathar":"Mummoorthigal Sthalam (abode of all three of the Trimurti)",
+    "Erumbiswarar":"Devas became ants (erumbu) to worship in secret from demon Tharukasura; Shiva became an ant-hill",
+    "Mayuranathar":"Parvati cursed to be born as peahen worshipped here to lift the curse",
+    "Thiruketheeswaram":"One of 5 ancient Ishwarams of Sri Lanka; razed by Portuguese 1575, rebuilt 1903"
   };
 
   // ============================================================
-  // E. CURATED AUDIO (26 temples)
+  // E. CURATED AUDIO
   // ============================================================
   const CURATED_AUDIO = {
     "Sattainathar / Brahmapureeswarar":"https://www.youtube.com/results?search_query=Sirkazhi+Brahmapureeswarar+Thevaram+Sambandar",
@@ -311,120 +282,85 @@
     "Pashupatinath":"https://www.youtube.com/results?search_query=Pashupatinath+Thevaram+Sambandar",
     "Kedareshwarar":"https://www.youtube.com/results?search_query=Kedarnath+Thevaram",
     "Mallikarjuna":"https://www.youtube.com/results?search_query=Srisailam+Thevaram",
-    "Thirumarai Kadar (Vedaranyeswarar)":"https://www.youtube.com/results?search_query=Vedaranyam+Thevaram",
+    "Thirumarai Kadar (Vedaranyeswarar)":"https://www.youtube.com/results?search_query=Vedaranyam+Thevaram"
   };
 
   // ============================================================
-  // F. UI TRANSLATIONS
+  // F. CSS INJECTION
   // ============================================================
-  const UI_STRINGS = {
-    title:{en:"Paadal Petra Sthalams - 276 Shiva Temples of the Tevaram",ta:"பாடல் பெற்ற தலங்கள் - தேவாரத்தில் பாடப்பெற்ற 276 சிவத்தலங்கள்"},
-    search_ph:{en:"Search temple, town, district...",ta:"கோயில், ஊர், மாவட்டம் தேடுக..."},
-    tier_lbl:{en:"Tier:",ta:"நிலை:"},
-    region_lbl:{en:"Region:",ta:"நாடு:"},
-    reset:{en:"Reset",ta:"மீட்டமை"},
-    showing:{en:"Showing",ta:"காட்டுகிறது"},
-    of:{en:"of",ta:"/"},
-  };
-
-  // ============================================================
-  // G. CSS INJECTION
-  // ============================================================
-  const css = `
-    .lang-toggle{position:fixed;top:8px;right:8px;z-index:1100;padding:6px 12px;background:#FFF8E7;color:#A0522D;border:1.5px solid #D4AF37;border-radius:18px;font-weight:700;cursor:pointer;font-size:.85rem;box-shadow:0 2px 6px rgba(0,0,0,.2)}
-    .lang-toggle:hover{background:#D4AF37;color:#fff}
-    .coord-panel{margin-top:8px;padding:7px 9px;background:#FFF8E7;border:1px solid #e8dcc0;border-radius:5px}
-    .coord-row{display:flex;align-items:center;gap:6px;font-size:.74rem;margin-bottom:5px}
-    .coord-label{color:#7a6b5a;font-weight:600;text-transform:uppercase;font-size:.6rem;letter-spacing:.5px}
-    .coord-value{font-family:'SF Mono',Consolas,monospace;color:#2A1810;font-size:.78rem;font-weight:600;user-select:all}
-    .coord-actions{display:flex;gap:5px;flex-wrap:wrap}
-    .coord-btn,.audio-btn{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border:1.5px solid #D2691E;border-radius:4px;background:#fff;color:#A0522D;font-size:.68rem;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap;transition:all .15s}
-    .coord-btn:hover{background:#D2691E;color:#fff}
-    .coord-btn-gmap{border-color:#4285F4;color:#4285F4}
-    .coord-btn-gmap:hover{background:#4285F4;color:#fff}
-    .coord-btn-apple{border-color:#000;color:#000}
-    .coord-btn-apple:hover{background:#000;color:#fff}
-    .coord-btn-osm{border-color:#7EBC6F;color:#4F7D3E}
-    .coord-btn-osm:hover{background:#7EBC6F;color:#fff}
-    .coord-btn.copied{background:#4CAF50;color:#fff;border-color:#4CAF50}
-    .audio-btn{border-color:#8B5A2B;color:#8B5A2B;background:linear-gradient(135deg,#fff8e7 0%,#fef0c7 100%)}
-    .audio-btn:hover{background:linear-gradient(135deg,#D2691E 0%,#A0522D 100%);color:#fff}
-  `;
   const styleEl = document.createElement("style");
-  styleEl.textContent = css;
+  styleEl.textContent =
+    ".lang-toggle{position:fixed;top:8px;right:8px;z-index:1100;padding:6px 12px;background:#FFF8E7;color:#A0522D;border:1.5px solid #D4AF37;border-radius:18px;font-weight:700;cursor:pointer;font-size:.85rem;box-shadow:0 2px 6px rgba(0,0,0,.2)}" +
+    ".lang-toggle:hover{background:#D4AF37;color:#fff}" +
+    ".coord-panel{margin-top:8px;padding:7px 9px;background:#FFF8E7;border:1px solid #e8dcc0;border-radius:5px}" +
+    ".coord-row{display:flex;align-items:center;gap:6px;font-size:.74rem;margin-bottom:5px}" +
+    ".coord-label{color:#7a6b5a;font-weight:600;text-transform:uppercase;font-size:.6rem;letter-spacing:.5px}" +
+    ".coord-value{font-family:'SF Mono',Consolas,monospace;color:#2A1810;font-size:.78rem;font-weight:600;user-select:all}" +
+    ".coord-actions{display:flex;gap:5px;flex-wrap:wrap}" +
+    ".coord-btn,.audio-btn{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border:1.5px solid #D2691E;border-radius:4px;background:#fff;color:#A0522D;font-size:.68rem;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap;transition:all .15s}" +
+    ".coord-btn:hover{background:#D2691E;color:#fff}" +
+    ".coord-btn-gmap{border-color:#4285F4;color:#4285F4}" +
+    ".coord-btn-gmap:hover{background:#4285F4;color:#fff}" +
+    ".coord-btn-apple{border-color:#000;color:#000}" +
+    ".coord-btn-apple:hover{background:#000;color:#fff}" +
+    ".coord-btn-osm{border-color:#7EBC6F;color:#4F7D3E}" +
+    ".coord-btn-osm:hover{background:#7EBC6F;color:#fff}" +
+    ".coord-btn.copied{background:#4CAF50;color:#fff;border-color:#4CAF50}" +
+    ".audio-btn{border-color:#8B5A2B;color:#8B5A2B;background:linear-gradient(135deg,#fff8e7 0%,#fef0c7 100%)}" +
+    ".audio-btn:hover{background:linear-gradient(135deg,#D2691E 0%,#A0522D 100%);color:#fff}";
   document.head.appendChild(styleEl);
 
   // ============================================================
-  // H. APPLY DATA PATCHES (Tamil names + Wiki URLs + Cultural Notes)
+  // G. APPLY DATA PATCHES
   // ============================================================
- function applyDataPatches() {
-  if (typeof TEMPLES === "undefined") { 
-    setTimeout(applyDataPatches, 100); 
-    return; 
+  function applyDataPatches() {
+    if (typeof TEMPLES === "undefined") { setTimeout(applyDataPatches, 100); return; }
+    let taApplied = 0, wikiFixed = 0;
+    TEMPLES.forEach(function(t) {
+      if (!t.name_ta && NAME_TA_MORE[t.name]) { t.name_ta = NAME_TA_MORE[t.name]; taApplied++; }
+      const newWiki = WIKI_OVERRIDES[t.name] || (t.wiki && t.wiki.indexOf("?search=") !== -1
+        ? "https://en.wikipedia.org/wiki/Special:Search?search=" + encodeURIComponent(t.name + " Temple " + t.town) + "&go=Go"
+        : t.wiki);
+      t.wiki_en = newWiki;
+      t.wiki_ta = TAMIL_WIKI_OVERRIDES[t.name] || newWiki;
+      t.wiki = newWiki;
+      if (newWiki !== t.wiki) wikiFixed++;
+      if (CULTURAL_NOTES[t.name]) {
+        t.notes = t.notes && t.notes.trim()
+          ? "★ " + CULTURAL_NOTES[t.name] + " · " + t.notes
+          : "★ " + CULTURAL_NOTES[t.name];
+      }
+    });
+    console.log("[pps_v3_patch] Applied Tamil names to", taApplied, "temples; fixed", wikiFixed, "Wiki URLs");
+    if (typeof window.render === "function") window.render();
   }
-  let taApplied = 0;
-  let wikiFixed = 0;
-  TEMPLES.forEach(t => {
-    // Add Tamil deity name if missing
-    if (!t.name_ta && NAME_TA_MORE[t.name]) {
-      t.name_ta = NAME_TA_MORE[t.name];
-      taApplied++;
-    }
-    // Fix Wiki URL: override or convert search-URL to Special:Search
-    const newWiki = WIKI_OVERRIDES[t.name] || (t.wiki && t.wiki.includes("?search=") 
-      ? "https://en.wikipedia.org/wiki/Special:Search?search=" + encodeURIComponent(t.name + " Temple " + t.town) + "&go=Go"
-      : t.wiki);
-    t.wiki_en = newWiki;
-    t.wiki_ta = TAMIL_WIKI_OVERRIDES[t.name] || newWiki;
-    t.wiki = newWiki;
-    if (newWiki !== t.wiki) wikiFixed++;
-    // Add cultural notes
-    if (CULTURAL_NOTES[t.name]) {
-      t.notes = t.notes && t.notes.trim()
-        ? "★ " + CULTURAL_NOTES[t.name] + " · " + t.notes
-        : "★ " + CULTURAL_NOTES[t.name];
-    }
-  });
-  console.log("[pps_v3_patch] Applied Tamil names to", taApplied, "temples; fixed", wikiFixed, "Wiki URLs");
-  
-  // Force re-render — try multiple ways to be sure
-  if (typeof window.render === "function") {
-    window.render();
-  } else if (typeof render === "function") {
-    render();
-  } else {
-    console.warn("[pps_v3_patch] render() not found — cards won't refresh");
-  }
-}
 
   // ============================================================
-  // I. LANGUAGE TOGGLE
+  // H. LANGUAGE TOGGLE
   // ============================================================
   function setupLangToggle() {
     const savedLang = localStorage.getItem("pps-lang") || "en";
     const btn = document.createElement("button");
     btn.className = "lang-toggle";
     btn.textContent = savedLang === "en" ? "தமிழ்" : "EN";
-    btn.onclick = () => {
+    btn.onclick = function() {
       const newLang = btn.textContent === "தமிழ்" ? "ta" : "en";
       localStorage.setItem("pps-lang", newLang);
       btn.textContent = newLang === "en" ? "தமிழ்" : "EN";
-      // Swap wiki URLs
-      TEMPLES.forEach(t => { t.wiki = newLang === "ta" ? (t.wiki_ta || t.wiki_en) : t.wiki_en; });
-      // Update UI labels
-      const placeholder = UI_STRINGS.search_ph[newLang];
+      TEMPLES.forEach(function(t) { t.wiki = newLang === "ta" ? (t.wiki_ta || t.wiki_en) : t.wiki_en; });
       const searchEl = document.getElementById("search");
-      if (searchEl) searchEl.placeholder = placeholder;
+      if (searchEl) searchEl.placeholder = newLang === "ta" ? "கோயில், ஊர், மாவட்டம் தேடுக..." : "Search temple, town, district...";
       const resetEl = document.getElementById("reset");
-      if (resetEl) resetEl.textContent = UI_STRINGS.reset[newLang];
-      if (typeof render === "function") render();
+      if (resetEl) resetEl.textContent = newLang === "ta" ? "மீட்டமை" : "Reset";
+      if (typeof window.render === "function") window.render();
     };
     document.body.appendChild(btn);
   }
+
   // ============================================================
-  // J. COORDINATES + AUDIO BUTTONS (for cards only, not popups)
+  // I. COORDS + AUDIO PANEL (cards only)
   // ============================================================
-   function buildCoordPanel(t) {
+  function buildCoordPanel(t) {
     if (t.lat == null || t.lng == null) return "";
     const lat = parseFloat(t.lat).toFixed(4);
     const lng = parseFloat(t.lng).toFixed(4);
@@ -432,11 +368,9 @@
     const gmap = "https://www.google.com/maps?q=" + lat + "," + lng + "&z=17";
     const apple = "https://maps.apple.com/?ll=" + lat + "," + lng + "&z=17&q=" + encodeURIComponent(t.name);
     const osm = "https://www.openstreetmap.org/?mlat=" + lat + "&mlon=" + lng + "&zoom=17";
-    const audioUrl = (typeof CURATED_AUDIO !== "undefined" && CURATED_AUDIO[t.name])
-      ? CURATED_AUDIO[t.name]
-      : "https://www.youtube.com/results?search_query=" + encodeURIComponent(t.town + " " + t.name + " Thevaram pathigam");
-    const audioLabel = (typeof CURATED_AUDIO !== "undefined" && CURATED_AUDIO[t.name]) ? "🎵 Listen ★" : "🎵 Listen";
-    
+    const audioUrl = CURATED_AUDIO[t.name] || "https://www.youtube.com/results?search_query=" + encodeURIComponent(t.town + " " + t.name + " Thevaram pathigam");
+    const audioLabel = CURATED_AUDIO[t.name] ? "🎵 Listen ★" : "🎵 Listen";
+
     return '<div class="coord-panel">' +
       '<div class="coord-row"><span class="coord-label">📍</span><span class="coord-value">' + coords + '</span></div>' +
       '<div class="coord-actions">' +
@@ -449,20 +383,74 @@
     '</div>';
   }
 
-  window.__copyCoords = function(e, coords, btn) {
-    e.stopPropagation(); e.preventDefault();
-    const success = function() {
-      const o = btn.innerHTML;
-      btn.innerHTML = "✓ Copied!";
-      btn.classList.add("copied");
-      setTimeout(function() { btn.innerHTML = o; btn.classList.remove("copied"); }, 1500);
-    };
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(coords).then(success).catch(function() { fallback(coords) && success(); });
-    } else {
-      fallback(coords) && success();
+  function injectCardPanels() {
+    document.querySelectorAll('.card[data-sno]').forEach(function(card) {
+      if (card.querySelector('.coord-panel')) return;
+      const sno = parseInt(card.dataset.sno);
+      const temple = TEMPLES.find(function(x) { return x.sno === sno; });
+      if (temple) card.insertAdjacentHTML('beforeend', buildCoordPanel(temple));
+    });
+  }
+
+  function injectTamilNames() {
+    document.querySelectorAll('.card[data-sno]').forEach(function(card) {
+      if (card.querySelector('.card-name-ta')) return;
+      if (card.querySelector('.card-name-ta-injected')) return;
+      const sno = parseInt(card.dataset.sno);
+      const t = TEMPLES.find(function(x) { return x.sno === sno; });
+      if (!t) return;
+      const ta = t.name_ta || NAME_TA_MORE[t.name];
+      if (!ta) return;
+      const nameEl = card.querySelector('.card-name');
+      if (!nameEl) return;
+      const div = document.createElement('div');
+      div.className = 'card-name-ta-injected';
+      div.textContent = ta;
+      div.style.cssText = 'font-family:"Noto Serif Tamil",serif;font-size:0.9rem;color:#A0522D;font-weight:600;margin-top:3px;display:block;width:100%;';
+      const head = card.querySelector('.card-head');
+      if (head) head.insertAdjacentElement('afterend', div);
+    });
+  }
+
+  function watchCards() {
+    const cardsContainer = document.getElementById('cards');
+    if (!cardsContainer) { setTimeout(watchCards, 200); return; }
+    injectTamilNames();
+    injectCardPanels();
+    const observer = new MutationObserver(function() {
+      setTimeout(function() { injectTamilNames(); injectCardPanels(); }, 10);
+    });
+    observer.observe(cardsContainer, { childList: true, subtree: false });
+  }
+
+  // ============================================================
+  // J. GLOBAL CLICK DELEGATE for coord/audio buttons
+  // ============================================================
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    e.stopPropagation();
+    e.preventDefault();
+    const action = btn.dataset.action;
+    if (action === 'open') {
+      const url = btn.dataset.url;
+      if (url) window.open(url, '_blank', 'noopener,noreferrer');
+    } else if (action === 'copy') {
+      const coords = btn.dataset.coords;
+      const success = function() {
+        const o = btn.innerHTML;
+        btn.innerHTML = "✓ Copied!";
+        btn.classList.add("copied");
+        setTimeout(function() { btn.innerHTML = o; btn.classList.remove("copied"); }, 1500);
+      };
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(coords).then(success).catch(function() { fallback(coords) && success(); });
+      } else {
+        fallback(coords) && success();
+      }
     }
-  };
+  }, true);
+
   function fallback(t) {
     try {
       const ta = document.createElement("textarea");
@@ -477,63 +465,45 @@
     } catch(e) { return false; }
   }
 
-    // Inject Tamil deity names into cards (works regardless of render() state)
-  function injectTamilNames() {
-    document.querySelectorAll('.card[data-sno]').forEach(function(card) {
-      // Duplicate guard — skip if either the base template's or our injected version exists
-      if (card.querySelector('.card-name-ta')) return;
-      if (card.querySelector('.card-name-ta-injected')) return;
-      
-      const sno = parseInt(card.dataset.sno);
-      const t = TEMPLES.find(function(x) { return x.sno === sno; });
-      if (!t) return;
-      
-      // Try multiple sources for the Tamil name
-      const ta = t.name_ta || NAME_TA_MORE[t.name];
-      if (!ta) return;
-      
-      const nameEl = card.querySelector('.card-name');
-      if (!nameEl) return;
-      
-      const div = document.createElement('div');
-      div.className = 'card-name-ta-injected';
-      div.textContent = ta;
-      div.style.cssText = 'font-family:"Noto Serif Tamil",serif;font-size:0.9rem;color:#A0522D;font-weight:600;margin-top:3px;display:block;width:100%;';
-      
-      // Insert right after the .card-head div
-      const head = card.querySelector('.card-head');
-      if (head) {
-        head.insertAdjacentElement('afterend', div);
-      }
-    });
-  }
-  // Inject coords + audio panel into right-side cards (after every render)
-  function injectCardPanels() {
-    document.querySelectorAll('.card[data-sno]').forEach(function(card) {
-      if (card.querySelector('.coord-panel')) return; // already injected
-      const sno = parseInt(card.dataset.sno);
-      const temple = TEMPLES.find(function(x) { return x.sno === sno; });
-      if (temple) card.insertAdjacentHTML('beforeend', buildCoordPanel(temple));
-    });
-  }
+  // ============================================================
+  // K. BUILD HERO IMAGE (Naalvar painting)
+  // ============================================================
+  function buildHero() {
+    const placeholder = document.getElementById('hero-placeholder');
+    if (placeholder) placeholder.remove();
+    if (document.querySelector('.hero-image')) return;
 
-  // Watch for card list changes (filtering, searching) and re-inject
- function watchCards() {
-    const cardsContainer = document.getElementById('cards');
-    if (!cardsContainer) { setTimeout(watchCards, 200); return; }
-    
-    // Initial injection — both Tamil names AND coord panels
-    injectTamilNames();
-    injectCardPanels();
-    
-    // Watch for future changes
-    const observer = new MutationObserver(function() {
-      setTimeout(function() {
-        injectTamilNames();
-        injectCardPanels();
-      }, 10);
-    });
-    observer.observe(cardsContainer, { childList: true, subtree: false });
+    const hero = document.createElement('div');
+    hero.className = 'hero-image';
+    hero.setAttribute('style', 'position:relative;width:100%;height:auto;max-height:360px;overflow:hidden;background:#2A1810;border-bottom:3px solid #D4AF37;display:block;');
+
+    const img = document.createElement('img');
+    img.src = 'naalvar-cover.jpeg';
+    img.alt = 'The Naalvar — Sambandar, Appar, Sundarar, Manikkavasakar';
+    img.setAttribute('style', 'width:100%;height:auto;max-height:360px;object-fit:cover;object-position:center 35%;display:block;');
+    img.onerror = function() {
+      hero.style.background = 'linear-gradient(135deg,#D2691E,#A0522D)';
+      hero.style.height = '200px';
+      img.style.display = 'none';
+    };
+
+    const overlay = document.createElement('div');
+    overlay.setAttribute('style', 'position:absolute;bottom:0;left:0;right:0;background:linear-gradient(180deg,transparent 0%,rgba(42,24,16,0.9) 100%);padding:40px 24px 16px;color:#fff;');
+
+    const captionEn = document.createElement('div');
+    captionEn.textContent = 'The Naalvar — the four Saiva poet-saints whose hymns define these 276 sthalas';
+    captionEn.setAttribute('style', 'font-size:0.95rem;font-weight:500;margin-bottom:4px;');
+
+    const captionTa = document.createElement('div');
+    captionTa.textContent = 'நால்வர் — இந்த 276 தலங்களை இசை பாடிய சைவ நாயன்மார்கள்';
+    captionTa.setAttribute('style', 'font-family:"Noto Serif Tamil",serif;font-size:0.9rem;color:#D4AF37;font-weight:500;');
+
+    overlay.appendChild(captionEn);
+    overlay.appendChild(captionTa);
+    hero.appendChild(img);
+    hero.appendChild(overlay);
+
+    document.body.insertBefore(hero, document.body.firstChild);
   }
 
   // ============================================================
@@ -543,118 +513,15 @@
     applyDataPatches();
     setupLangToggle();
     watchCards();
-    
+    buildHero();
     if (typeof gtag === "function") {
       gtag('event', 'patch_loaded', { event_category: 'v3', event_label: 'pps_v3_patch' });
     }
   }
-  
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
   } else {
     boot();
   }
-    // Global click delegate — handles all coord-panel button clicks via data attributes
-  document.addEventListener('click', function(e) {
-    const btn = e.target.closest('[data-action]');
-    if (!btn) return;
-    
-    e.stopPropagation();
-    e.preventDefault();
-    
-    const action = btn.dataset.action;
-    
-    if (action === 'open') {
-      const url = btn.dataset.url;
-      if (url) window.open(url, '_blank', 'noopener,noreferrer');
-    } else if (action === 'copy') {
-      const coords = btn.dataset.coords;
-      const success = function() {
-        const o = btn.innerHTML;
-        btn.innerHTML = "✓ Copied!";
-        btn.classList.add("copied");
-        setTimeout(function() { btn.innerHTML = o; btn.classList.remove("copied"); }, 1500);
-      };
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(coords).then(success).catch(function() {
-          if (fallback(coords)) success();
-        });
-      } else {
-        if (fallback(coords)) success();
-      }
-    }
-  }, true);
-
-    // ============================================================
-  // K. BUILD HERO IMAGE (avoids HTML escaping issues)
-  // ============================================================
-   function buildHero() {
-    // Remove placeholder
-    const placeholder = document.getElementById('hero-placeholder');
-    if (placeholder) placeholder.remove();
-    
-    // Skip if already built
-    if (document.querySelector('.hero-image')) return;
-    
-    // Build hero image element
-    const hero = document.createElement('div');
-    hero.className = 'hero-image';
-    hero.setAttribute('style', 'position:relative;width:100%;height:360px;overflow:hidden;background:#2A1810;border-bottom:3px solid #D4AF37;display:block;z-index:1;');
-    
-    const img = document.createElement('img');
-    img.src = 'naalvar-cover.jpeg';
-    img.alt = 'The Naalvar — Sambandar, Appar, Sundarar, Manikkavasakar — worshipping at a Shiva shrine';
-    img.setAttribute('style', 'width:100%;height:auto;max-height:360px;object-fit:cover;object-position:center 35%;display:block;');
-    img.onerror = function() {
-      hero.style.background = 'linear-gradient(135deg,#D2691E,#A0522D)';
-      hero.style.height = '200px';
-      img.style.display = 'none';
-    };
-    
-    const overlay = document.createElement('div');
-    overlay.setAttribute('style', 'position:absolute;bottom:0;left:0;right:0;background:linear-gradient(180deg,transparent 0%,rgba(42,24,16,0.9) 100%);padding:40px 24px 16px;color:#fff;');
-    hero.style.position = 'relative'; // so the absolute overlay positions correctly
-    
-    const captionEn = document.createElement('div');
-    captionEn.textContent = 'The Naalvar — the four Saiva poet-saints whose hymns define these 276 sthalas';
-    captionEn.setAttribute('style', 'font-size:0.95rem;font-weight:500;margin-bottom:4px;');
-    
-    const captionTa = document.createElement('div');
-    captionTa.textContent = 'நால்வர் — இந்த 276 தலங்களை இசை பாடிய சைவ நாயன்மார்கள்';
-    captionTa.setAttribute('style', 'font-family:"Noto Serif Tamil",serif;font-size:0.9rem;color:#D4AF37;font-weight:500;');
-    
-    overlay.appendChild(captionEn);
-    overlay.appendChild(captionTa);
-    hero.appendChild(img);
-    hero.appendChild(overlay);
-    
-    // ✅ KEY FIX: Insert as direct first child of <body>, not nested anywhere
-    document.body.insertBefore(hero, document.body.firstChild);
-  }
-    
-    const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:linear-gradient(180deg,transparent 0%,rgba(42,24,16,0.9) 100%);padding:40px 24px 16px;color:#fff';
-    
-    const captionEn = document.createElement('div');
-    captionEn.textContent = 'The Naalvar — the four Saiva poet-saints whose hymns define these 276 sthalas';
-    captionEn.style.cssText = 'font-size:0.95rem;font-weight:500;margin-bottom:4px';
-    
-    const captionTa = document.createElement('div');
-    captionTa.textContent = 'நால்வர் — இந்த 276 தலங்களை இசை பாடிய சைவ நாயன்மார்கள்';
-    captionTa.style.cssText = 'font-family:"Noto Serif Tamil",serif;font-size:0.9rem;color:#D4AF37;font-weight:500';
-    
-    overlay.appendChild(captionEn);
-    overlay.appendChild(captionTa);
-    hero.appendChild(img);
-    hero.appendChild(overlay);
-    
-    placeholder.replaceWith(hero);
-  }
-
-  // Run hero builder right away
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", buildHero);
-  } else {
-    buildHero();
-  }
-  })();
+})();
