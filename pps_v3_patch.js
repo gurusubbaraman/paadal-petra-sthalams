@@ -514,6 +514,7 @@
     setupLangToggle();
     watchCards();
     buildHero();
+    setupHeroParallax();
     if (typeof gtag === "function") {
       gtag('event', 'patch_loaded', { event_category: 'v3', event_label: 'pps_v3_patch' });
     }
@@ -524,4 +525,42 @@
   } else {
     boot();
   }
+
+    // ============================================================
+  // L. HERO PARALLAX FADE-OUT ON SCROLL
+  // ============================================================
+  function setupHeroParallax() {
+    const hero = document.querySelector('.hero-image');
+    if (!hero) { setTimeout(setupHeroParallax, 200); return; }
+    
+    const overlay = hero.querySelector('div'); // the dark overlay with captions
+    const heroHeight = hero.offsetHeight;
+    
+    let ticking = false;
+    function updateHero() {
+      const scrollY = window.scrollY;
+      const progress = Math.min(scrollY / heroHeight, 1); // 0 to 1
+      
+      // Image moves up slightly slower than scroll (parallax)
+      hero.style.transform = `translateY(${scrollY * 0.4}px)`;
+      
+      // Fade out as you scroll
+      hero.style.opacity = String(1 - progress);
+      
+      // Caption overlay fades faster
+      if (overlay) overlay.style.opacity = String(1 - progress * 1.5);
+      
+      ticking = false;
+    }
+    
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        window.requestAnimationFrame(updateHero);
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+  
+  // Add this line to your boot() function:
+  // setupHeroParallax();
 })();
