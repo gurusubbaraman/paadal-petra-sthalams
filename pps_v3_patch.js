@@ -1,7 +1,7 @@
 /**
  * Paadal Petra Sthalams — v3 Patch (Complete Recovery Build)
  * Tamil names + Wiki URL fixes + language toggle + coords panel
- * + Apple/OSM/Google Maps + Copy + Tevaram audio + Naalvar hero
+ * + Apple/OSM/Google Maps + Copy + Tevaram audio + Naalvar hero +Naalvar Journey
  */
 (function() {
   'use strict';
