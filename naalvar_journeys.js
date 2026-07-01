@@ -1,7 +1,8 @@
 (function() {
-  var JOURNEYS = {
+   var JOURNEYS = {
     sambandar: {
       name: "Sambandar",
+      name_ta: "\u0BA4\u0BBF\u0BB0\u0BC1\u0B9E\u0BBE\u0BA9\u0B9A\u0BAE\u0BCD\u0BAA\u0BA8\u0BCD\u0BA4\u0BB0\u0BCD",
       century: "7th c.",
       color: "#D2691E",
       born_place: "Sirkazhi",
@@ -10,6 +11,7 @@
     },
     appar: {
       name: "Appar",
+      name_ta: "\u0BA4\u0BBF\u0BB0\u0BC1\u0BA8\u0BBE\u0BB5\u0BC1\u0B95\u0BCD\u0B95\u0BB0\u0B9A\u0BB0\u0BCD",
       century: "6-7th c.",
       color: "#8B4513",
       born_place: "Tiruvamur, Panruti",
@@ -18,6 +20,7 @@
     },
     sundarar: {
       name: "Sundarar",
+      name_ta: "\u0B9A\u0BC1\u0BA8\u0BCD\u0BA4\u0BB0\u0BB0\u0BCD",
       century: "8th c.",
       color: "#B8860B",
       born_place: "Thirunavalur",
@@ -26,6 +29,7 @@
     },
     manickavasakar: {
       name: "Manickavasakar",
+      name_ta: "\u0BAE\u0BBE\u0BA3\u0BBF\u0B95\u0BCD\u0B95\u0BB5\u0BBE\u0B9A\u0B95\u0BB0\u0BCD",
       century: "9th c.",
       color: "#4A0E4E",
       born_place: "Thiruvadhavur (near Madurai)",
@@ -33,6 +37,7 @@
       sequence: [201,3]
     }
   };
+``
 
   var css = ".nv-panel{position:fixed;bottom:20px;left:20px;z-index:1100;background:#fff;border:2px solid #e8dcc0;border-radius:10px;padding:12px;box-shadow:0 4px 20px rgba(0,0,0,.18);max-width:280px;font-family:Inter,sans-serif;transition:all .25s ease}"
     + ".nv-panel.minimized{padding:8px 12px;max-width:180px}"
@@ -45,6 +50,7 @@
     + ".nv-btns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}"
     + ".nv-btn{padding:8px;background:#fff;border:2px solid #e8dcc0;border-radius:6px;cursor:pointer;font-size:.75rem;font-weight:700;font-family:inherit}"
     + ".nv-btn:hover{background:#FFF8E7}"
+    + ".nv-btn.active{background:#FFF8E7;box-shadow:0 2px 6px rgba(210,105,30,.35)}"
     + ".nv-btn.active{background:#FFF8E7;box-shadow:0 2px 6px rgba(210,105,30,.35)}"
     + ".nv-btn-clear{width:100%;padding:6px;background:#f5f0e6;color:#7a6b5a;border:1.5px solid #e8dcc0;border-radius:6px;cursor:pointer;font-size:.72rem;font-family:inherit}"
     + ".nv-btn-clear:hover{background:#e8dcc0}"
@@ -180,7 +186,7 @@
     var btnHtml = "";
     Object.keys(JOURNEYS).forEach(function(k) {
       var jr = JOURNEYS[k];
-      btnHtml += '<button class="nv-btn" data-saint="' + k + '" style="border-color:' + jr.color + ';color:' + jr.color + '">🪔 ' + jr.name + '<br><small>' + jr.century + '</small></button>';
+            btnHtml += '<button class="nv-btn" data-saint="' + k + '" style="border-color:' + jr.color + ';color:' + jr.color + '">🪔 ' + jr.name + '<span class="nv-btn-ta">' + jr.name_ta + '</span><small>' + jr.century + '</small></button>';
     });
 
     c.innerHTML = '<div class="nv-header">'
