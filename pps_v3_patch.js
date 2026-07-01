@@ -307,7 +307,32 @@
     ".coord-btn-osm:hover{background:#7EBC6F;color:#fff}" +
     ".coord-btn.copied{background:#4CAF50;color:#fff;border-color:#4CAF50}" +
     ".audio-btn{border-color:#8B5A2B;color:#8B5A2B;background:linear-gradient(135deg,#fff8e7 0%,#fef0c7 100%)}" +
+    ".naalvar-selector{position:fixed;bottom:20px;left:20px;z-index:1100;background:#fff;border:2px solid #e8dcc0;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.18);max-width:340px;overflow:hidden}" +
+".naalvar-header{background:linear-gradient(135deg,#FFF8E7 0%,#FEF0C7 100%);padding:10px 14px;border-bottom:1px solid #e8dcc0;display:flex;align-items:center;gap:8px}" +
+".naalvar-title{font-size:.88rem;font-weight:700;color:#2A1810;flex:1}" +
+".naalvar-subtitle{font-family:'Noto Serif Tamil',serif;font-size:.72rem;color:#7a6b5a;flex:2}" +
+".naalvar-toggle{background:transparent;border:none;cursor:pointer;font-size:1.2rem;color:#A0522D;padding:0 4px;font-weight:700}" +
+".naalvar-body{padding:12px}" +
+".naalvar-selector.minimized .naalvar-body{display:none}" +
+".naalvar-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}" +
+".naalvar-btn{padding:10px 6px;background:#fff;border:2px solid #e8dcc0;border-radius:8px;cursor:pointer;text-align:center;transition:all .15s;line-height:1.2}" +
+".naalvar-btn:hover{background:#FFF8E7;transform:translateY(-1px);box-shadow:0 2px 6px rgba(0,0,0,.1)}" +
+".naalvar-btn.active{background:#FFF8E7;box-shadow:0 2px 8px rgba(210,105,30,.35)}" +
+".naalvar-btn-icon{font-size:1.2rem;margin-bottom:2px}" +
+".naalvar-btn-name{font-size:.78rem;font-weight:700}" +
+".naalvar-btn-name-ta{font-family:'Noto Serif Tamil',serif;font-size:.72rem;color:#7a6b5a;margin-top:2px}" +
+".naalvar-btn-century{font-size:.62rem;color:#999;margin-top:2px}" +
+".naalvar-btn-clear{width:100%;padding:6px;background:#f5f0e6;color:#7a6b5a;border:1.5px solid #e8dcc0;border-radius:6px;cursor:pointer;font-size:.75rem;font-weight:600;margin-bottom:8px}" +
+".naalvar-btn-clear:hover{background:#e8dcc0}" +
+".naalvar-disclaimer{font-size:.65rem;color:#7a6b5a;line-height:1.4;padding-top:8px;border-top:1px solid #e8dcc0}" +
+".journey-marker{background:rgba(255,255,255,.95);border:3px solid #D2691E;border-radius:50%;width:40px;height:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;box-shadow:0 3px 10px rgba(0,0,0,.35)}" +
+".journey-marker span{font-size:.7rem;margin-top:1px}" +
+".journey-marker-start{background:#D4AF37;color:#fff}" +
+".journey-marker-end{background:#4A0E4E;color:#fff}" +
+".journey-line{filter:drop-shadow(0 0 6px rgba(0,0,0,.3))}" +
+"@media(max-width:900px){.naalvar-selector{bottom:10px;left:10px;right:10px;max-width:none}.naalvar-buttons{grid-template-columns:1fr 1fr}}
     ".audio-btn:hover{background:linear-gradient(135deg,#D2691E 0%,#A0522D 100%);color:#fff}";
+  
   document.head.appendChild(styleEl);
 
   // ============================================================
@@ -527,6 +552,7 @@ const newWiki = WIKI_OVERRIDES[t.name] || safeFallback;
     buildHero();
     rebuildFooter();
     setupHeroParallax();
+    buildNaalvarSelector();
     if (typeof gtag === "function") {
       gtag('event', 'patch_loaded', { event_category: 'v3', event_label: 'pps_v3_patch' });
     }
@@ -653,4 +679,226 @@ const newWiki = WIKI_OVERRIDES[t.name] || safeFallback;
   
   // Add this line to your boot() function:
   // setupHeroParallax();
+    // ============================================================
+  // N. NAALVAR JOURNEY ANIMATION
+  // ============================================================
+  let currentJourneyPolyline = null;
+  let currentJourneyMarkers = [];
+  let currentJourneyAnimation = null;
+  
+  function clearJourney() {
+    if (currentJourneyPolyline && typeof map !== 'undefined') {
+      map.removeLayer(currentJourneyPolyline);
+      currentJourneyPolyline = null;
+    }
+    currentJourneyMarkers.forEach(function(m) { 
+      if (typeof map !== 'undefined') map.removeLayer(m); 
+    });
+    currentJourneyMarkers = [];
+    if (currentJourneyAnimation) {
+      clearInterval(currentJourneyAnimation);
+      currentJourneyAnimation = null;
+    }
+  }
+  
+  function drawJourney(saintKey) {
+    if (typeof NAALVAR_JOURNEYS === 'undefined' || typeof map === 'undefined' || typeof L === 'undefined') {
+      console.warn("[pps_v3_patch] Cannot draw journey — required globals missing");
+      return;
+    }
+    
+    clearJourney();
+    
+    const journey = NAALVAR_JOURNEYS[saintKey];
+    if (!journey) return;
+    
+    // Collect coordinates from TEMPLES using the S.No sequence
+    const points = [];
+    const templeStops = [];
+    journey.sequence.forEach(function(sno, idx) {
+      const temple = TEMPLES.find(function(t) { return t.sno === sno; });
+      if (temple && temple.lat != null && temple.lng != null) {
+        points.push([temple.lat, temple.lng]);
+        templeStops.push({ 
+          latlng: [temple.lat, temple.lng], 
+          temple: temple, 
+          order: idx + 1 
+        });
+      }
+    });
+    
+    if (points.length < 2) {
+      console.warn("[pps_v3_patch] Journey has fewer than 2 valid stops");
+      return;
+    }
+    
+    // Fit the map to show the entire journey
+    const bounds = L.latLngBounds(points);
+    map.fitBounds(bounds, { padding: [50, 50] });
+    
+    // Create the polyline with just the first point initially
+    currentJourneyPolyline = L.polyline([points[0]], {
+      color: journey.color,
+      weight: 4,
+      opacity: 0.85,
+      lineJoin: 'round',
+      className: 'journey-line'
+    }).addTo(map);
+    
+    // Add numbered start marker (birthplace)
+    const startMarker = L.marker(templeStops[0].latlng, {
+      icon: L.divIcon({
+        html: '<div class="journey-marker journey-marker-start" style="border-color:' + journey.color + '">🚩<br><span>1</span></div>',
+        iconSize: [40, 40],
+        iconAnchor: [20, 20],
+        className: ''
+      }),
+      zIndexOffset: 1000
+    }).addTo(map)
+      .bindPopup(
+        '<b style="color:' + journey.color + '">🚩 Start of ' + journey.name + '\'s journey</b><br>' +
+        '<b>' + templeStops[0].temple.name + '</b><br>' +
+        templeStops[0].temple.town + ', ' + templeStops[0].temple.district + '<br>' +
+        '<small><i>' + journey.born_place + '</i></small>'
+      );
+    currentJourneyMarkers.push(startMarker);
+    
+    // Animate the polyline by adding points progressively
+    let currentIdx = 1;
+    const totalDuration = 15000; // 15 seconds total
+    const stepDuration = totalDuration / points.length;
+    
+    currentJourneyAnimation = setInterval(function() {
+      if (currentIdx >= points.length) {
+        clearInterval(currentJourneyAnimation);
+        currentJourneyAnimation = null;
+        
+        // Add end marker at moksha temple
+        const endStop = templeStops[templeStops.length - 1];
+        const endMarker = L.marker(endStop.latlng, {
+          icon: L.divIcon({
+            html: '<div class="journey-marker journey-marker-end" style="border-color:' + journey.color + '">🕉️<br><span>' + endStop.order + '</span></div>',
+            iconSize: [40, 40],
+            iconAnchor: [20, 20],
+            className: ''
+          }),
+          zIndexOffset: 1000
+        }).addTo(map)
+          .bindPopup(
+            '<b style="color:' + journey.color + '">🕉️ Final destination: ' + journey.name + '</b><br>' +
+            '<b>' + endStop.temple.name + '</b><br>' +
+            endStop.temple.town + '<br>' +
+            '<small><i>' + journey.moksha_place + '</i></small>'
+          );
+        currentJourneyMarkers.push(endMarker);
+        return;
+      }
+      
+      // Extend the polyline
+      currentJourneyPolyline.addLatLng(points[currentIdx]);
+      
+      // Add a numbered dot at each intermediate stop
+      if (currentIdx < points.length - 1) {
+        const stop = templeStops[currentIdx];
+        const stopMarker = L.circleMarker(stop.latlng, {
+          radius: 7,
+          fillColor: journey.color,
+          color: '#fff',
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 1
+        }).addTo(map)
+          .bindTooltip('#' + stop.order + ' ' + stop.temple.name, { direction: 'top' })
+          .bindPopup(
+            '<b>Stop #' + stop.order + '</b><br>' +
+            '<b style="color:' + journey.color + '">' + stop.temple.name + '</b><br>' +
+            stop.temple.town + ', ' + stop.temple.district
+          );
+        currentJourneyMarkers.push(stopMarker);
+      }
+      
+      currentIdx++;
+    }, stepDuration);
+  }
+  
+  // ============================================================
+  // O. NAALVAR SELECTOR UI
+  // ============================================================
+  function buildNaalvarSelector() {
+    if (typeof NAALVAR_JOURNEYS === 'undefined') {
+      console.warn("[pps_v3_patch] NAALVAR_JOURNEYS not loaded — skipping selector UI");
+      return;
+    }
+    
+    const container = document.createElement('div');
+    container.className = 'naalvar-selector';
+    
+    const saintButtons = Object.entries(NAALVAR_JOURNEYS).map(function(entry) {
+      const key = entry[0];
+      const s = entry[1];
+      // Get first name only for the button
+      const shortName = s.name.split(' ')[0].split('(')[0].trim();
+      const shortNameTa = s.name_ta.split(' ')[0].trim();
+      return '<button class="naalvar-btn" data-saint="' + key + '" style="border-color:' + s.color + '">' +
+        '<div class="naalvar-btn-icon" style="color:' + s.color + '">' + s.icon + '</div>' +
+        '<div class="naalvar-btn-name" style="color:' + s.color + '">' + shortName + '</div>' +
+        '<div class="naalvar-btn-name-ta">' + shortNameTa + '</div>' +
+        '<div class="naalvar-btn-century">' + s.century + '</div>' +
+      '</button>';
+    }).join('');
+    
+    container.innerHTML = 
+      '<div class="naalvar-header">' +
+        '<div class="naalvar-title">🚶 Trace a saint\'s pilgrimage</div>' +
+        '<div class="naalvar-subtitle">நால்வரின் யாத்திரையைக் காணுங்கள்</div>' +
+        '<button class="naalvar-toggle" title="Minimize">−</button>' +
+      '</div>' +
+      '<div class="naalvar-body">' +
+        '<div class="naalvar-buttons">' + saintButtons + '</div>' +
+        '<button class="naalvar-btn-clear" data-saint="clear">✕ Clear map</button>' +
+        '<div class="naalvar-disclaimer">' +
+          '<i>Traditional pilgrimage sequence per <a href="https://en.wikipedia.org/wiki/Periya_Puranam" target="_blank" style="color:#D4AF37">Periya Puranam</a> (Sekkizhar, 12th c.). Exact historical routes are debated among scholars.</i>' +
+        '</div>' +
+      '</div>';
+    
+    document.body.appendChild(container);
+    
+    // Handle saint selection
+    container.addEventListener('click', function(e) {
+      const btn = e.target.closest('[data-saint]');
+      if (btn) {
+        e.stopPropagation();
+        const saint = btn.dataset.saint;
+        
+        // Toggle active state
+        container.querySelectorAll('.naalvar-btn').forEach(function(b) {
+          b.classList.remove('active');
+        });
+        
+        if (saint === 'clear') {
+          clearJourney();
+        } else {
+          btn.classList.add('active');
+          drawJourney(saint);
+          
+          // Analytics
+          if (typeof gtag === 'function') {
+            gtag('event', 'naalvar_journey', { 
+              event_category: 'engagement', 
+              event_label: saint 
+            });
+          }
+        }
+        return;
+      }
+      
+      // Handle minimize/expand
+      const toggle = e.target.closest('.naalvar-toggle');
+      if (toggle) {
+        e.stopPropagation();
+        container.classList.toggle('minimized');
+        toggle.textContent = container.classList.contains('minimized') ? '+' : '−';
+      }
+    });
+  }
 })();
