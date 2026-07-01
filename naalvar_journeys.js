@@ -10,7 +10,7 @@
  *   - UI panel (self-mounts on <body>)
  *   - Map animation (Leaflet integration)
  *
- * Dependencies: window.TEMPLES, window.map, window.L (Leaflet)
+ * Dependencies: window.TEMPLES, window.leafletMap, window.L (Leaflet)
  * If any dependency is missing, this module silently no-ops.
  *
  * Traditional pilgrimage sequences per Periya Puranam (Sekkizhar, 12th c.).
@@ -113,13 +113,13 @@
   var currentInterval = null;
 
   function clearJourney() {
-    if (typeof window.map === 'undefined') return;
+    if (typeof window.leafletMap === 'undefined') return;
     if (currentPolyline) {
-      window.map.removeLayer(currentPolyline);
+      window.leafletMap.removeLayer(currentPolyline);
       currentPolyline = null;
     }
     currentMarkers.forEach(function(m) {
-      window.map.removeLayer(m);
+      window.leafletMap.removeLayer(m);
     });
     currentMarkers = [];
     if (currentInterval) {
@@ -136,7 +136,7 @@
   }
 
   function drawJourney(saintKey) {
-    if (typeof window.map === 'undefined' || typeof window.TEMPLES === 'undefined' || typeof window.L === 'undefined') {
+    if (typeof window.leafletMap === 'undefined' || typeof window.TEMPLES === 'undefined' || typeof window.L === 'undefined') {
       console.warn("[naalvar_journeys] Dependencies not ready");
       return;
     }
@@ -162,14 +162,14 @@
       return;
     }
 
-    window.map.fitBounds(window.L.latLngBounds(points), { padding: [50, 50] });
+    window.leafletMap.fitBounds(window.L.latLngBounds(points), { padding: [50, 50] });
 
     currentPolyline = window.L.polyline([points[0]], {
       color: journey.color,
       weight: 4,
       opacity: 0.85,
       lineJoin: 'round'
-    }).addTo(window.map);
+    }).addTo(window.leafletMap);
 
     var startIconHtml = '<div class="journey-marker journey-marker-start" style="border-color:' + journey.color + '">' +
       '\uD83D\uDEA9<br><span>1</span></div>';
@@ -181,7 +181,7 @@
         className: ''
       }),
       zIndexOffset: 1000
-    }).addTo(window.map);
+    }).addTo(window.leafletMap);
 
     var startPopupHtml = '<b style="color:' + journey.color + '">Start: ' + escapeHtml(journey.name) + '</b><br>' +
       '<b>' + escapeHtml(stops[0].temple.name) + '</b><br>' +
@@ -209,7 +209,7 @@
             className: ''
           }),
           zIndexOffset: 1000
-        }).addTo(window.map);
+        }).addTo(window.leafletMap);
 
         var endPopupHtml = '<b style="color:' + journey.color + '">Final destination</b><br>' +
           '<b>' + escapeHtml(endStop.temple.name) + '</b><br>' +
@@ -231,7 +231,7 @@
           weight: 2,
           opacity: 1,
           fillOpacity: 1
-        }).addTo(window.map);
+        }).addTo(window.leafletMap);
         stopMarker.bindTooltip('#' + stop.order + ' ' + stop.temple.name, { direction: 'top' });
         var stopPopupHtml = '<b>Stop #' + stop.order + '</b><br>' +
           '<b style="color:' + journey.color + '">' + escapeHtml(stop.temple.name) + '</b><br>' +
@@ -320,7 +320,7 @@
   // BOOT
   // ============================================================
   function boot() {
-    if (typeof window.TEMPLES === 'undefined' || typeof window.map === 'undefined' || typeof window.L === 'undefined') {
+    if (typeof window.TEMPLES === 'undefined' || typeof window.leafletMap === 'undefined' || typeof window.L === 'undefined') {
       setTimeout(boot, 200);
       return;
     }

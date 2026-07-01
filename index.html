@@ -207,6 +207,7 @@ const REGIONS = ["Chola Nadu (North of Kaveri)", "Chola Nadu (South of Kaveri)",
 const TIER_COLORS = {T1:"#D4AF37", T2:"#FF8C00", T3:"#87CEEB", T4:"#999999"};
 const state = {search:"", tiers:new Set(["T1","T2","T3","T4"]), regions:new Set(REGIONS)};
 const map = L.map('map', {zoomControl:true}).setView([11,79], 6);
+window.leafletMap =map;
 const baseMaps = {
   "🗺️ Streets (OSM)": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; https://www.openstreetmap.org/copyrightOpenStreetMap</a> contributors',
