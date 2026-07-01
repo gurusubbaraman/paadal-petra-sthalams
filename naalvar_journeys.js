@@ -38,8 +38,7 @@
     }
   };
 ``
-
-  var css = ".nv-panel{position:fixed;bottom:20px;left:20px;z-index:1100;background:#fff;border:2px solid #e8dcc0;border-radius:10px;padding:12px;box-shadow:0 4px 20px rgba(0,0,0,.18);max-width:280px;font-family:Inter,sans-serif;transition:all .25s ease}"
+  var css = ".nv-panel{position:fixed;bottom:20px;left:20px;z-index:1100;background:#fff;border:2px solid #e8dcc0;border-radius:10px;padding:12px;box-shadow:0 4px 20px rgba(0,0,0,.18);max-width:340px;font-family:Inter,sans-serif;transition:all .25s ease}"
     + ".nv-panel.minimized{padding:8px 12px;max-width:180px}"
     + ".nv-panel.minimized .nv-body{display:none}"
     + ".nv-panel.minimized .nv-title{margin-bottom:0}"
@@ -48,10 +47,11 @@
     + ".nv-toggle{background:transparent;border:none;cursor:pointer;font-size:1.1rem;color:#A0522D;padding:2px 6px;font-weight:700;border-radius:4px}"
     + ".nv-toggle:hover{background:#FFF8E7}"
     + ".nv-btns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}"
-    + ".nv-btn{padding:8px;background:#fff;border:2px solid #e8dcc0;border-radius:6px;cursor:pointer;font-size:.75rem;font-weight:700;font-family:inherit}"
+    + ".nv-btn{padding:10px 6px;text-align:center;line-height:1.3;background:#fff;border:2px solid #e8dcc0;border-radius:6px;cursor:pointer;font-size:.78rem;font-weight:700;font-family:inherit}"
     + ".nv-btn:hover{background:#FFF8E7}"
     + ".nv-btn.active{background:#FFF8E7;box-shadow:0 2px 6px rgba(210,105,30,.35)}"
-    + ".nv-btn.active{background:#FFF8E7;box-shadow:0 2px 6px rgba(210,105,30,.35)}"
+    + ".nv-btn-ta{font-family:Noto Serif Tamil,serif;font-size:.72rem;color:#7a6b5a;margin:3px 0;font-weight:600;display:block;line-height:1.2}"
+    + ".nv-btn small{display:block;font-size:.65rem;color:#999;font-weight:400;margin-top:2px}"
     + ".nv-btn-clear{width:100%;padding:6px;background:#f5f0e6;color:#7a6b5a;border:1.5px solid #e8dcc0;border-radius:6px;cursor:pointer;font-size:.72rem;font-family:inherit}"
     + ".nv-btn-clear:hover{background:#e8dcc0}"
     + ".nv-note{font-size:.65rem;color:#7a6b5a;margin-top:6px;line-height:1.3}"
