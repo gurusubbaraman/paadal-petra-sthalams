@@ -7,7 +7,7 @@
  *   • Thiruvatavurar Puranam (for Manickavasakar)
  *   • Sundarar's own Tiruttondar Thogai (10-verse list of devotees)
  * 
- * IMPORTANT NOTE ON HISTORICITY:
+ * IMPORTANT NOTE ON HISTORICITY
  * The exact chronological order of temple visits is debated among 
  * scholars. Sekkizhar wrote 300+ years after Sambandar and Appar, 
  * and 400+ years after Sundarar. What we present here is the 
