@@ -577,13 +577,16 @@ const newWiki = WIKI_OVERRIDES[t.name] || safeFallback;
     }
     
     // Row 1: Sources
-    makeRow('Sources:', [
-      '276 list from aanmeegam.org & Wikipedia · coordinates curated & geocoded via OpenStreetMap Nominatim · Tamil names from Tamil Wikipedia, shaivam.org, greenmesg.org · Kalvettu references from ',
-      makeLink('SII Vols I-XIX (archive.org)', 'https://archive.org/details/in.ernet.dli.2015.95780'),
-      ', ASI Annual Reports on Epigraphy, and ',
-      makeLink('whatisindia.com', 'https://www.whatisindia.com/inscriptions/south_indian_inscriptions/'),
-      '.'
-    ]);
+
+makeRow('Sources:', [
+  '276 list from ',
+  makeLink('aanmeegam.org', 'https://aanmeegam.org/en/temples/276-shiva-thevaram-thiruthalangal/'),
+  ' & Wikipedia · coordinates curated & geocoded via OpenStreetMap Nominatim · Tamil names from Tamil Wikipedia, shaivam.org, greenmesg.org · Kalvettu references from ',
+  makeLink('SII Vols I-XIX (archive.org)', 'https://archive.org/details/in.ernet.dli.2015.95780'),
+  ', ASI Annual Reports on Epigraphy, and ',
+  makeLink('whatisindia.com', 'https://www.whatisindia.com/inscriptions/south_indian_inscriptions/'),
+  '.'
+]);
     
     // Row 2: Map credits
     makeRow('Map credits:', [
